@@ -10,9 +10,9 @@ import productRouter from "./routes/productRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 
 
-
+const port=process.env.PORT || 4000
 const app = express()
-const port= process.env.PORT || 4000
+
 
 connectDB();
 connectCloudinary();
@@ -36,3 +36,4 @@ app.listen(port,()=>{
     console.log("server runs on ", port);
     
 })
+
