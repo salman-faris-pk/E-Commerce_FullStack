@@ -1,8 +1,63 @@
+import { backendUrl } from "@/app/page";
+import { RootState } from "@/store/store";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
 import React, { useState } from "react";
 import { IoSend } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
-export const DescriptionReview = () => {
+export const DescriptionReview = ({productId}:{productId:string}) => { 
+    
   const [activeTab, setActiveTab] = useState("description");
+  const [message,setMessage]=useState<string>('')
+  const queryClient = useQueryClient();
+  const { token }=useSelector((state: RootState) => state.user);
+ 
+  const handleSendComment=async()=>{
+    try {
+      const response=await axios.post(backendUrl+"/api/product/postcomment",{
+        productId,
+        comment:message
+      },{
+        headers:{token}
+      })
+       
+      if(response.data.success){
+        setMessage('')
+        queryClient.invalidateQueries({ queryKey: ["comments"] });
+        return response.data
+      }else{
+        toast.error(response.data.message)
+      }
+      
+    } catch (error:any) {
+      toast.error(error.message)
+    }
+  }
+
+
+
+   const {data: allComents}=useQuery({
+    queryKey:["comments",productId],
+    queryFn:async()=>{
+      try {
+        const response = await axios.get(`${backendUrl}/api/product/comments?productId=${productId}`);
+        if(response.data.success){
+          return response.data.comments;
+        }else{
+          toast.error(response.data.message)
+        }
+      } catch (error:any) {
+       toast.error(error.message)
+        
+      }
+    },
+       enabled: !!productId,
+   })
+  
+   const comments = allComents ? [...allComents].reverse() : [];
+   const comentlength= comments.length;
 
   return (
     <div className="mt-20">
@@ -19,7 +74,7 @@ export const DescriptionReview = () => {
             activeTab === "reviews" ? "bg-gray-200 text-black/80 font-semibold" : "" }`}
              onClick={() => setActiveTab("reviews")}
         >
-          Reviews (122)
+          Reviews ({comentlength})
         </span>
       </div>
 
@@ -46,37 +101,34 @@ export const DescriptionReview = () => {
 
         {activeTab === "reviews" && (
              <div className="flex flex-col"> 
+             {token && (
               <div className="flex px-3 gap-x-3">
                 <input type="text"
                  className="outline-none border-b text-sm  w-full sm:w-[50%] px-3 py-1"
                  placeholder="type review...."
+                 value={message}
+                 onChange={(e:React.ChangeEvent<HTMLInputElement>)=> setMessage(e.target.value)}
                  />
-                 <button className="p-2 bg-gray-200 text-black/80 rounded-md" type="submit">
+                 <button className="p-2 bg-gray-200 text-black/80 rounded-md" type="button"  onClick={handleSendComment}>
                  <IoSend size={15}/>
                 </button>
                </div>
-               <div className="max-h-60 overflow-y-auto space-y-3 p-3 rounded-md">
-             <div className="border p-4 rounded-md mt-1">
-                 <h3 className="font-semibold">User Review 1</h3>
-                 <p>This product is amazing! I really love it.</p>
+                )}
+            
+            <div className="max-h-60 overflow-y-auto ">
+             {comments&&comments.map((coments:any,index:any)=>(
+               <div className="space-y-3 p-3 rounded-md" key={index}>
+               <div className="border p-4 rounded-md mt-1">
+                 <h3 className="font-semibold text-md">{coments.username}</h3>
+                 <p className="text-xs md:mt-2">{coments.comment}</p> 
+              </div>
              </div>
-             <div className="border p-4 rounded-md">
-                 <h3 className="font-semibold">User Review 2</h3>
-                 <p>Great quality and fast shipping. Highly recommend!</p>
+             ))}
+
              </div>
-             <div className="border p-4 rounded-md">
-                 <h3 className="font-semibold">User Review 3</h3>
-                 <p>Not what I expected, but still decent.</p>
-             </div>
-             <div className="border p-4 rounded-md">
-                 <h3 className="font-semibold">User Review 4</h3>
-                 <p>Excellent customer service!</p>
-             </div>
-             <div className="border p-4 rounded-md">
-                 <h3 className="font-semibold">User Review 5</h3>
-                 <p>Will definitely buy again!</p>
-             </div>
-         </div>
+               
+
+
          </div>
         )}
       </div>

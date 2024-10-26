@@ -185,7 +185,7 @@ const CollectionItemPage = ({ params }: { params: { id: string } }) => {
 
     {singleproduct && (
       <>
-        <DescriptionReview />
+        <DescriptionReview productId={singleproduct._id}/>
         <RelatedProducts
           _id={singleproduct._id}
           category={singleproduct.category}

@@ -1,4 +1,6 @@
+import commentmodel from "../models/commentModel.js"
 import productModel from "../models/productModel.js"
+import userModel from "../models/userModel.js"
 
 
 
@@ -169,7 +171,65 @@ const getRelatedProducts = async (req, res) => {
 
 
 
+const SendComment=async(req,res)=>{
+
+    const {userId,productId,comment}=req.body;
+
+    try {
+
+      const user=await userModel.findById(userId)
+      if(!user){
+        return res.json({success:false,message:"Please login ,unauthorized"})
+      }
+      const name=user.name;
+
+      const newCooment= new commentmodel({
+         username: name,
+         productId,
+         comment
+      })
+      await newCooment.save()
+  
+      res.json({success:true,message:"succesfully created"})
+      
+    } catch (error) {
+        return res.json({success:false,message:error.message})
+        
+    }
+}
+
+
+const productComments=async(req,res)=>{
+
+    const { productId } = req.query;
+
+    try {
+       
+        if (!productId) {
+            return res.status(400).json({ success: false, message: "Product ID is required" });
+        }
+
+     
+        const comments = await commentmodel.find({ productId }).select('username comment');
+
+       
+        return res.json({ success: true, comments });
+        
+        
+    } catch (error) {
+        return res.json({success:false,message:error.message})
+    }
+}
 
 
 
-export { listProduct,singleProduct,latestproduct,bestsellers,filterProducts,getRelatedProducts}
+export { 
+    listProduct,
+    singleProduct,
+    latestproduct,
+    bestsellers,
+    filterProducts,
+    getRelatedProducts,
+    SendComment,
+    productComments
+}
