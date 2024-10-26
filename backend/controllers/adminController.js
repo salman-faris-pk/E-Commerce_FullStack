@@ -149,6 +149,98 @@ const userlist=async(req,res)=>{
 }
 
 
+const OrderChartStats=async(req,res)=>{
+  try {
+    const orders = await ordermodel.find({ payment: true });
+ 
+
+    const categoryCount = {};
+
+    orders.forEach(order => {
+      order.items.forEach(item => {
+        const productCategory = item.category;
+
+        if (categoryCount[productCategory]) {
+          categoryCount[productCategory] += item.quantity; 
+        } else {
+          categoryCount[productCategory] = item.quantity; 
+        }
+      });
+    });
+
+    const data = Object.keys(categoryCount).map(category => ({
+      name: category,
+      count: categoryCount[category],
+    }));
+
+    res.json({ success: true, data });
+    
+  } catch (error) {
+    res.json({success:false,message: error.message})
+    
+  }
+}
+
+
+const Profits=async(req,res)=>{
+  try {
+  
+  const orders=await ordermodel.find({ payment: true});
+
+  const totalPrice = orders.reduce((acc, order) => {
+    return acc + order.amount;
+}, 0);
+
+const Profit = parseFloat((totalPrice * 0.7).toFixed(0));
+
+const order=await ordermodel.find({ payment: false});
+
+const lTotal = order.reduce((acc, ord) => {
+  return acc + ord.amount;
+}, 0);
+
+const pending = parseFloat((lTotal * 0.7).toFixed(0));
+
+const totalCombined = totalPrice + lTotal;
+const profitPer = parseFloat(((Profit / totalCombined) * 100).toFixed(0));
+const pendingPer = parseFloat(((pending / totalCombined) * 100).toFixed(0));
+
+
+
+
+res.json({success:true,data:{Profit,profitPer,pending,pendingPer}})
+ 
+    
+  } catch (error) {
+    res.json({success:false,message: error.message})
+    
+  }
+}
+
+
+
+const Totalstatics=async(req,res)=>{
+  try {
+
+    const userCount = await userModel.countDocuments();
+    const productCount = await productModel.countDocuments();
+    const orderCount = await ordermodel.countDocuments();
+    const salesCount = await ordermodel.countDocuments({ payment: true });
+    
+
+   res.json({
+    success:true,
+    userCount,
+    productCount,
+    orderCount,
+    salesCount
+   })
+    
+    
+  } catch (error) {
+    res.json({success:false,message: error.message})
+  }
+}
 
 
 
@@ -157,5 +249,8 @@ export {
   addProduct,
   removeProduct,
   listProduct,
-  userlist
+  userlist,
+  OrderChartStats,
+  Profits,
+  Totalstatics
 }

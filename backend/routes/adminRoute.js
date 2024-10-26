@@ -1,5 +1,5 @@
 import express from "express"
-import { adminlogin,addProduct,removeProduct, listProduct ,userlist} from "../controllers/adminController.js"
+import { adminlogin,addProduct,removeProduct, listProduct ,userlist, OrderChartStats, Profits, Totalstatics} from "../controllers/adminController.js"
 import upload from "../middleware/multer.js"
 import adminAuth from "../middleware/adminAuth.js"
 
@@ -13,6 +13,12 @@ adminRouter.get("/list-allproducts",listProduct)
                                         
 adminRouter.post("/remove-product",adminAuth,removeProduct)
 adminRouter.post("/user-list",adminAuth,userlist)
+adminRouter.post("/charts",adminAuth,OrderChartStats)
+adminRouter.post("/profits",adminAuth,Profits)
+adminRouter.post("/totalstats",adminAuth,Totalstatics)
+
+
+
 
 
 

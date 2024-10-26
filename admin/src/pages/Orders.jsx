@@ -21,7 +21,8 @@ const queryClient = useQueryClient();
         headers: { token },
       });
 
-      if (response.data.orders) {
+      if (response.data.success) {
+        queryClient.invalidateQueries({ queryKey: ["profits"] });
         return response.data.orders;
       } else {
         toast.error(response.data.message);
@@ -65,7 +66,7 @@ const queryClient = useQueryClient();
   return (
     <div>
        <h3>Orders({orders.length})</h3>
-       <div>
+       <div className='max-h-screen overflow-y-auto'>
          {
           orders && orders.reverse().map((order,index)=> (
             <div key={index} className='grid grid-cols-1 sm:grid-cols-[0.5fr_2fr_1fr_1fr_1fr] gap-3 

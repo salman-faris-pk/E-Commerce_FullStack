@@ -62,7 +62,7 @@ const List = ({token}) => {
      
 
     if (isLoading) {
-      return <div className='flex items-center justify-center'>
+      return <div className='flex items-center justify-center mt-16'>
         <Commet color="#9e34ee" size="small"/>
       </div>;
     }

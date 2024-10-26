@@ -38,7 +38,7 @@ export const DescriptionReview = () => {
             <p>
               E-commerce websites typically display products or services along
               with detailed descriptions, images, prices, and any available
-              variations (e.g., sizes, colors). Each product usually has its own
+              variations (e.g., sizes). Each product usually has its own
               dedicated page with relevant information.
             </p>
           </>
