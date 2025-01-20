@@ -19,9 +19,12 @@ const app = express()
 connectDB();
 connectCloudinary();
 
-
+const corsOptions = {
+  origin: ['https://agaci-admin-side.netlify.app/'],
+  credentials: true,
+};
 app.use(express.json())
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 
