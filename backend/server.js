@@ -21,12 +21,12 @@ job.start();
 
 connectCloudinary();
 
-const corsOptions = {
-  origin: ['https://agaci-admin-side.netlify.app/'],
-  credentials: true,
-};
+// const corsOptions = {
+//   origin: ['https://agaci-admin-side.netlify.app'],
+//   credentials: true,
+// };
 app.use(express.json())
-app.use(cors(corsOptions));
+app.use(cors());
 app.use(cookieParser());
 
 
