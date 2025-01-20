@@ -67,6 +67,7 @@ const CollectionItemPage = ({ params }: { params: { id: string } }) => {
           headers:{token}
         });        
         if (res.data.success) {
+          toast.success("Item added to cart");
           return res.data.cartData;
         } else {
           toast.error(res.data.message);
@@ -82,8 +83,7 @@ const CollectionItemPage = ({ params }: { params: { id: string } }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       queryClient.invalidateQueries({ queryKey: ["totalcount"] });
-      toast.success("Item added to cart");
-     
+      
     },
     onError: (error:unknown) => {
       if (error instanceof Error) {
