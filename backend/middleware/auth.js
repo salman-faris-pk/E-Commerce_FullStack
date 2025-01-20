@@ -7,7 +7,7 @@ const authUser =async(req,res, next) => {
 
     const { token }=req.headers;
     
-    console.log(token);
+   //  console.log(token);
     
 
     if(!token){

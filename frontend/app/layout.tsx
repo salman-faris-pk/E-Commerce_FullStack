@@ -8,6 +8,7 @@ import { Searchbar } from "@/components/Searchbar";
 import { ToastContainer} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import QueryProvider from "@/provider/queryProvider";
+import Script from "next/script";
 
 
 const outfit = Outfit({
@@ -38,20 +39,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-      <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+       <Script 
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="afterInteractive" // Ensures it's loaded after the page renders
+        />
       </head>
       <body
        className={`${outfit.className} ${prata.className} antialiased`}
       >
         <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
           <QueryProvider>
-        <ClientProvider>
-          <ToastContainer/>
-          <Navbar />
-          <Searchbar />
-           {children}
-           <Footer />
-        </ClientProvider>
+             <ClientProvider>
+                <ToastContainer/>
+                  <Navbar />
+                  <Searchbar />
+                 {children}
+                 <Footer />
+             </ClientProvider>
         </QueryProvider>
         </div>
       </body>

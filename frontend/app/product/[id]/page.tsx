@@ -1,12 +1,12 @@
 "use client";
-import { backendUrl } from "@/app/page";
+import { backendUrl } from "../../../utils/backendUrl";
 import { DescriptionReview } from "@/components/DescriptionReview";
 import { RelatedProducts } from "@/components/RelatedProducts";
-import { AppDispatch, RootState } from "@/store/store";
+import { RootState } from "@/store/store";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 
@@ -14,7 +14,7 @@ import { toast } from "react-toastify";
 
 type Product = {
   _id: string;
-  bestseller: boolean;
+  bestseller?: boolean;
   category: string;
   description: string;
   image: string[];
@@ -49,8 +49,12 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
         } else {
           toast.error(response.data.message);
         }
-      } catch (error:any) {
-        toast.error(error.message)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+          } else {
+          toast.error("An unknown error occurred");
+         }
       }
     },
   });
@@ -67,8 +71,12 @@ const ProductPage = ({ params }: { params: { id: string } }) => {
         } else {
           toast.error(res.data.message);
         }
-      } catch (error: any) {
-        toast.error(error.message)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+          } else {
+          toast.error("An unknown error occurred");
+         }
       }
     },
     onSuccess: () => {

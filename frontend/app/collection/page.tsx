@@ -4,23 +4,21 @@ import Title from "@/components/Title";
 import { useEffect} from "react";
 import { MdArrowForwardIos } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { AppDispatch, RootState } from "@/store/store";
 import {  setCategory, setSortType, setSubCategory, toggleShowFilter } from "@/features/ProductSlice";
 import { CollectionItem } from "@/components/CollectionItem";
-import { backendUrl } from "../page";
+import { backendUrl } from "../../utils/backendUrl";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useQuery } from "@tanstack/react-query";
+import { AllProducts } from "../types/AllTypes";
 
 
 
+const CollectionPage = () => {
 
 
-
-const collectionPage = () => {
-
-
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
     const showFilter = useSelector((state: RootState) => state.products.showFilter);
     const category = useSelector((state: RootState) => state.products.category);
     const subcategory = useSelector((state: RootState) => state.products.subcategory);
@@ -72,7 +70,7 @@ useEffect(() => {
     };
 
   
-    const { data: Allproducts,isLoading}=useQuery({
+    const { data: Allproducts,isLoading}=useQuery<AllProducts[]>({
         queryKey:["allproducts",query],
         queryFn: async()=>{
             const res = await axios.get(`${backendUrl}/api/product/all-collections`, { params: query });
@@ -180,7 +178,7 @@ useEffect(() => {
 
                   <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 gap-y-6">
                      {
-                        Allproducts && Allproducts.map((item:any)=> (
+                        Allproducts && Allproducts.map((item)=> (
                             <CollectionItem id={item._id} name={item.name} image={item.image[0]} price={item.price} key={item._id}/>
                         ))
                      }
@@ -192,7 +190,7 @@ useEffect(() => {
     );
 };
 
-export default collectionPage; 
+export default CollectionPage; 
 
 
 

@@ -1,15 +1,10 @@
 "use client"
 import Link from 'next/link';
 import React from 'react'
+import { productItemProp } from "../app/types/AllTypes"
 
-type productItem={
-    _id:string;
-    image: string;
-    name: string;
-    price: number
-}
 
-export const ProductItem = ({_id,image,name,price}:productItem) => {
+export const ProductItem = ({_id,image,name,price}:productItemProp) => {
     const currency="₹";
 
   return (

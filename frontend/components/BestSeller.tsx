@@ -3,14 +3,14 @@ import Title from './Title';
 import { ProductItem } from './ProductItem';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { backendUrl } from '@/app/page';
+import { backendUrl } from '../utils/backendUrl';
 import { toast } from 'react-toastify';
-
+import { AllProducts } from "../app/types/AllTypes"
 
 export const BestSeller = () => {
 
   
- const {data: bestSeller}=useQuery({
+ const {data: bestSeller,isLoading}=useQuery<AllProducts[]>({
   queryKey:["bestsell"],
   queryFn: async()=>{
       try {
@@ -21,8 +21,12 @@ export const BestSeller = () => {
           toast.error(response.data.message)
          }
         
-      } catch (error:any) {
-        toast.error(error.message)
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+          } else {
+          toast.error("An unknown error occurred");
+         }
       }
   },
 
@@ -42,8 +46,11 @@ export const BestSeller = () => {
 
 
        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
+          {
+            isLoading && <p>Loading....</p>
+          }
          {
-            bestSeller && bestSeller.map((item:any)=> (
+            bestSeller && bestSeller.map((item: AllProducts)=> (
                 <ProductItem _id={item._id} image={item.image[0]} name={item.name} price={item.price} key={item._id}/>
             ))
          }

@@ -4,17 +4,19 @@ import { useQuery } from '@tanstack/react-query';
 import axios from "axios";
 import React from "react";
 import { toast } from "react-toastify";
-import { backendUrl } from "../page";
+import { backendUrl } from "../../utils/backendUrl";
+import { OrdersResponse,OrderItem} from "../types/AllTypes"
 
 
-const orderpage = () => {
-  var currency = "₹";
+
+const OrderPage = () => {
+  const currency = "₹";
   
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
   
 
-  const {data: Orders,refetch}=useQuery({
+  const {data: Orders,refetch}=useQuery<OrderItem[], Error>({
     queryKey:["orders"],
     queryFn: async()=>{
       
@@ -23,11 +25,11 @@ const orderpage = () => {
           toast.info("Please Login...");
           return [];
         }
-        const  res= await axios.post(backendUrl+"/api/order/user-orders",{},{ headers: {token}})
+        const  res= await axios.post<OrdersResponse>(backendUrl+"/api/order/user-orders",{},{ headers: {token}})
         if(res.data.success){
-            let allOrdersItem:any=[];
-             res.data.orders.map((order:any)=>{
-               order.items.map((item:any)=> {
+            const allOrdersItem: OrderItem[]=[];
+             res.data.orders.map((order)=>{
+               order.items.map((item)=> {
                 item['status']=order.status
                 item['payment']=order.payment
                 item['paymentMethod']=order.paymentMethod
@@ -38,12 +40,13 @@ const orderpage = () => {
 
              return allOrdersItem.reverse()
         }else{
-          toast.error(res.data.message)
+          toast.error(res.data.message || "Unknown error")
           return [];
         }
         
-       } catch (error:any) {
-        toast.error(error.message)
+       } catch (error: unknown) {
+        toast.error(error instanceof Error ? error.message : "An unknown error occurred");
+        return [];
        }
     },
     enabled: !!token, 
@@ -64,7 +67,7 @@ const orderpage = () => {
 
       <div>
         {Orders &&
-          Orders.map((item:any, index:any) => (
+          Orders.map((item,index) => (
             <div
               key={index}
               className="py-4 border-t border-b text-gray-700 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
@@ -101,7 +104,7 @@ const orderpage = () => {
                 <p className="text-sm md:text-base ">{item.status}</p>
                </div>
                <button className="border px-4 py-2 text-sm font-medium rounded-sm " onClick={handleTrackOrder}>
-                Track Order
+                  Track Order
                </button>
             </div>
             </div>
@@ -111,4 +114,4 @@ const orderpage = () => {
   );
 };
 
-export default orderpage;
+export default OrderPage;

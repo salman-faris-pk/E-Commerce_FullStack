@@ -3,7 +3,7 @@ import React from 'react'
 import Title from './Title'
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { backendUrl } from '@/app/page';
+import { backendUrl } from '../utils/backendUrl';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
 import { toast } from 'react-toastify';
@@ -20,7 +20,7 @@ export const CartTotal = () => {
   const queryClient = useQueryClient();
 
    
-    var currency="₹";
+    const currency="₹";
    
     const {data:total}=useQuery<Total>({
       queryKey:["totalprice",token],

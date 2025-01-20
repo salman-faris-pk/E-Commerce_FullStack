@@ -1,5 +1,5 @@
 "use client"
-import { backendUrl } from '@/app/page'
+import { backendUrl } from '../../../utils/backendUrl'
 import { CartTotal } from '@/components/CartTotal'
 import Title from '@/components/Title'
 import { useQueryClient } from '@tanstack/react-query'
@@ -7,28 +7,16 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { toast } from 'react-toastify'
+import { AllFormData,Order,RazorpayResponse} from "../../types/AllTypes"
 
-interface AllFormData{
-    firstName:string
-    lastName:string
-    email:string
-    street:string
-    city:string
-    state:string
-    zipcode:number | null
-    country:string
-    phone:number | null
-}
+
+
 
 
 const PlaceOrderpage = () => {
   
   const router=useRouter()
   const queryClient = useQueryClient();
-
-
-
-
 
   const [selected,setSelected]=useState('cod')
   const [formData,setFormdata]=useState<AllFormData>({
@@ -51,7 +39,7 @@ const PlaceOrderpage = () => {
 };
 
 
-  const initPay=(order:any)=>{    //for opens a window of razorpay 
+  const initPay=(order: Order)=>{    //for opens a window of razorpay 
       const options={
          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
          amount: order.amount,
@@ -60,7 +48,7 @@ const PlaceOrderpage = () => {
          description: 'Order payment',
          order_id: order.id,
          receipt: order.receipt,
-         handler: async(response:any)=> {
+         handler: async(response: RazorpayResponse)=> {
            const Token=localStorage.getItem('token')
            if(!Token){
             toast.info("please login")
@@ -74,8 +62,12 @@ const PlaceOrderpage = () => {
                queryClient.invalidateQueries({ queryKey: ["orders"] });
             }
             
-           } catch (error:any) {
-            toast.error(error.message)
+           } catch (error:unknown) {
+            if (error instanceof Error) {
+              toast.error(error.message);
+             } else {
+              toast.error("An unknown error occurred");
+             }
            }
          }
       }
@@ -91,7 +83,7 @@ const PlaceOrderpage = () => {
       try {
         const token=localStorage.getItem('token')
 
-        let orderData={
+        const orderData={
           address: formData
         }
 
@@ -152,8 +144,12 @@ const PlaceOrderpage = () => {
             break;
         }
         
-      } catch (error:any) {
-        toast.error(error.message)  
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+          } else {
+          toast.error("An unknown error occurred");
+          }
       }
   }
 

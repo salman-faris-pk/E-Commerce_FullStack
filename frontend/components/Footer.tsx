@@ -10,7 +10,7 @@ const Footer = () => {
          <div>
             <img src='/logo.png' alt='logo' className='mb-5 w-32'/>
             <p className='w-full md:w-2/3  text-gray-600'>
-            At A'GACI, we offer trendy, high-quality clothing for every occasion. From everyday wear to special events, our collection is designed to keep you stylish. Shop with ease, enjoy fast shipping, and rely on our excellent customer service for a seamless experience.
+            At A&apos;GACI, we offer trendy, high-quality clothing for every occasion. From everyday wear to special events, our collection is designed to keep you stylish. Shop with ease, enjoy fast shipping, and rely on our excellent customer service for a seamless experience.
             </p>
          </div>
 

@@ -1,19 +1,29 @@
 "use client"
 import Title from '@/components/Title'
 import { RootState } from '@/store/store'
-import React, { useState } from 'react'
+import React from 'react'
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { CartTotal } from '@/components/CartTotal'
 import { useRouter } from 'next/navigation'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
-import { backendUrl } from '../page'
+import { backendUrl } from '../../utils/backendUrl'
 import { toast } from 'react-toastify'
 import { useSelector } from 'react-redux';
 
 
-
-
+interface Product {
+  image: string[];
+  name: string;
+}
+interface CartItem {
+  _id: string;
+  productId: Product;
+  quantity: number;
+  price: number;
+  size: string;
+}
+type CartData = CartItem[];
 
  const Cartpage = () => {
 
@@ -21,14 +31,14 @@ import { useSelector } from 'react-redux';
   const {token}=useSelector((state: RootState) => state.user);
 
 
-    var currency="₹";
+    const currency="₹";
     
   const queryClient = useQueryClient();
     
     const router=useRouter()
 
 
-    const { data: cartData} = useQuery({
+    const { data: cartData,isLoading} = useQuery<CartData>({
         queryKey: ["cart"],
         queryFn: async () => {
           try {
@@ -49,9 +59,13 @@ import { useSelector } from 'react-redux';
               return []; 
             }
             
-          } catch (error) {
-            toast.error("Failed to fetch cart data");
-            return []; 
+          } catch (error: unknown) {
+            if (error instanceof Error) {
+              toast.error(`Failed to fetch cart data: ${error.message}`);
+          } else {
+              toast.error("Failed to fetch cart data");
+          }
+          return [];
           }
         },
 
@@ -76,13 +90,15 @@ import { useSelector } from 'react-redux';
             if (response.data.success) {
               queryClient.invalidateQueries({ queryKey: ["cart"] });
               queryClient.invalidateQueries({ queryKey: ["totalprice"] });
-
-              
             } else {
               toast.error(response.data.message);
             }
-          } catch (error) {
-            toast.error("Failed to update cart");
+          } catch (error:unknown) {
+            if (error instanceof Error) {
+              toast.error(error.message);
+              } else {
+              toast.error("An unknown error occurred");
+             }
           }
         }
       });
@@ -109,11 +125,13 @@ import { useSelector } from 'react-redux';
             toast.success('Item removed from cart');
             queryClient.invalidateQueries({ queryKey: ["cart"] });
             queryClient.invalidateQueries({ queryKey: ["totalprice"] });
-
-            
           }
-        } catch (error) {
-          toast.error('Failed to delete cart item');
+        } catch (error: unknown) {
+          if (error instanceof Error) {
+            toast.error(error.message);
+            } else {
+            toast.error("An unknown error occurred");
+           }
         }
       };
       
@@ -124,9 +142,11 @@ import { useSelector } from 'react-redux';
          <Title text1={'YOUR'} text2={'CART'}/>
        </div>
 
+       {isLoading && <p>Loading...</p>}
+
        <div className='max-h-[65vh] sm:max-h-[100vh] overflow-y-auto'>
-  {cartData &&
-    cartData.map((item: any, index: any) => {
+       {cartData &&
+      cartData.map((item, index) => {
         const product = item.productId; 
       return (
         <div
@@ -177,6 +197,7 @@ import { useSelector } from 'react-redux';
 
        <div className='flex justify-end my-20 '>
         <div className='w-full sm:w-[450px]'>
+          {isLoading &&  <div className="border-t-4 border-blue-500 border-solid w-5 h-5 rounded-full animate-spin"></div>}
          <CartTotal />
          {cartData&&cartData.length === 0 ? (
              <div className='w-full text-end'>

@@ -4,13 +4,10 @@ import 'swiper/css';
 import 'swiper/css/autoplay';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
-
+import  Image  from 'next/image'
 
 
 const Hero: React.FC = () => {
-
-
-
 
   return (
     <div className='flex flex-col sm:flex-row border border-gray-400 mt-3 sm:mt-1'>
@@ -39,21 +36,33 @@ const Hero: React.FC = () => {
       slidesPerView={1}
       autoplay={{ delay: 5000, disableOnInteraction: false }}
     >
-      <SwiperSlide>
-      <img src="/a1.jpg" alt='hero-img'/> 
+  
+     <SwiperSlide>
+        <div className="relative w-full h-80">
+          <Image src="/a1.jpg" alt="hero-img" fill  quality={100} priority={true}/>
+        </div>
       </SwiperSlide>
       <SwiperSlide>
-      <img src="/a2.jpg" alt='hero-img'/> 
+        <div className="relative w-full h-80">
+          <Image src="/a2.jpg" alt="hero-img" fill quality={100} priority={true}/>
+        </div>
       </SwiperSlide>
       <SwiperSlide>
-      <img src="/a4.jpg" alt='hero-img'/>    
+        <div className="relative w-full h-80">
+          <Image src="/a4.jpg" alt="hero-img" fill  quality={100} priority={true}/>
+        </div>
       </SwiperSlide>
       <SwiperSlide>
-      <img src="/a7.jpg" alt='hero-img'/> 
+        <div className="relative w-full h-80">
+          <Image src="/a7.jpg" alt="hero-img" fill  quality={100} priority={true}/>
+        </div>
       </SwiperSlide>
       <SwiperSlide>
-      <img src="/a10.jpg" alt='hero-img'/>    
+        <div className="relative w-full h-80">
+          <Image src="/a10.jpg" alt="hero-img" fill  quality={100} priority={true}/>
+        </div>
       </SwiperSlide>
+      
     </Swiper>
 
        

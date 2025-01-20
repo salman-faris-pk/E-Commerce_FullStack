@@ -6,12 +6,13 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { backendUrl } from "@/app/page";
+import { backendUrl } from "../../../utils/backendUrl";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
 
 type Product = {
   _id: string;
-  bestseller: boolean;
+  bestseller?: boolean;
   category: string;
   description: string;
   image: string[];
@@ -35,7 +36,7 @@ const CollectionItemPage = ({ params }: { params: { id: string } }) => {
  
   const {token}=useSelector((state: RootState) => state.user);
 
-  const { data: singleproduct } = useQuery<Product | undefined>({
+  const { data: singleproduct,isLoading } = useQuery<Product | undefined>({
     queryKey: ["singlepro", productId],
     queryFn: async () => {
       try {
@@ -48,8 +49,12 @@ const CollectionItemPage = ({ params }: { params: { id: string } }) => {
         } else {
           toast.error(response.data.message);
         }
-      } catch (error:any) {
-        toast.error(error.message)
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+          } else {
+          toast.error("An unknown error occurred");
+         }
       }
     },
   });
@@ -66,8 +71,12 @@ const CollectionItemPage = ({ params }: { params: { id: string } }) => {
         } else {
           toast.error(res.data.message);
         }
-      } catch (error: any) {
-        toast.error(error.message)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+          } else {
+          toast.error("An unknown error occurred");
+         }
       }
     },
     onSuccess: () => {
@@ -76,8 +85,12 @@ const CollectionItemPage = ({ params }: { params: { id: string } }) => {
       toast.success("Item added to cart");
      
     },
-    onError: (error:any) => {
-      toast.error(error.message);
+    onError: (error:unknown) => {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        } else {
+        toast.error("An unknown error occurred");
+       }
     },
   });
 
@@ -92,6 +105,8 @@ const CollectionItemPage = ({ params }: { params: { id: string } }) => {
   return (
     <div className="border-t-2 pt-10 transition-opacity ease-in duration-500 opacity-100">
     <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
+    {isLoading && <p className="flex items-center justify-center">Loading the product ....</p>}
+
       <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
         <div className="flex sm:flex-col overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full">
           {singleproduct &&

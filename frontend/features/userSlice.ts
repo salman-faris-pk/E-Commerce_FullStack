@@ -1,6 +1,5 @@
-import { backendUrl } from '@/app/page';
-import { createSlice, PayloadAction , createAsyncThunk} from '@reduxjs/toolkit';
-import axios from 'axios';
+import { createSlice, PayloadAction} from '@reduxjs/toolkit';
+
 
 interface AuthState {
   name: string;

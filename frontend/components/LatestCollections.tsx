@@ -2,17 +2,17 @@
 import Title from './Title'
 import { ProductItem } from './ProductItem'
 import axios from "axios"
-import { backendUrl } from '@/app/page';
+import { backendUrl } from '../utils/backendUrl';
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'react-toastify';
-
+import { AllProducts } from "../app/types/AllTypes"
 
 
 
 const LatestCollections = () => {
 
 
- const {data: latestdata}=useQuery({
+ const {data: latestdata,isLoading}=useQuery<AllProducts[]>({
   queryKey:["latestpro"],
   queryFn: async()=>{
       try {
@@ -23,13 +23,18 @@ const LatestCollections = () => {
           toast.error(response.data.message)
          }
         
-      } catch (error:any) {
-        toast.error(error.message)
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+          } else {
+          toast.error("An unknown error occurred");
+         }
       }
   },
 
     refetchInterval: 10000,
  })
+
 
 
   return (
@@ -40,10 +45,14 @@ const LatestCollections = () => {
           Explore our latest collection of must-have dresses, curated to elevate your style and comfort.
           </p>
        </div>
+        {
+          isLoading && <p>Loading.....</p>
+        }
+
        {latestdata && (
            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
            {
-               latestdata.map((item:any)=> (
+               latestdata.map((item:AllProducts)=> (
                    <ProductItem _id={item._id} image={item.image[0]} name={item.name} price={item.price} key={item._id}/>
                ))
            }

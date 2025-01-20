@@ -14,7 +14,7 @@ import { AppDispatch } from "@/store/store"
 import { setToken } from '@/features/userSlice';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { backendUrl } from '@/app/page';
+import { backendUrl } from '../utils/backendUrl';
 
 
 
@@ -69,8 +69,13 @@ export const Navbar = () => {
           return 0; 
         }
         
-      } catch (error:any) {
-        return 0;
+      } catch (error:unknown) {
+        if (error instanceof Error) {
+          console.error("Error message:", error.message);
+        } else {
+          console.error("An unknown error occurred"); 
+        }
+        return 0; 
       }
     },
     refetchInterval: 2000,

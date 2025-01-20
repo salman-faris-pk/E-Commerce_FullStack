@@ -1,6 +1,6 @@
 "use client"
 import axios from 'axios'
-import { backendUrl } from '../page'
+import { backendUrl } from '../../utils/backendUrl'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/store/store'
 import {
@@ -16,7 +16,7 @@ import { useEffect } from 'react'
 
 
 
- const loginpage = () => {
+ const LoginPage = () => {
   
   const router=useRouter()
   const dispatch: AppDispatch = useDispatch();
@@ -60,8 +60,12 @@ import { useEffect } from 'react'
 
         }
         
-      } catch (error:any) {
-        toast.error(error.message)
+      } catch (error:unknown) {
+          if (error instanceof Error) {
+          toast.error(error.message);
+          } else {
+          toast.error("An unknown error occurred");
+         }
       } 
     }
  
@@ -114,4 +118,4 @@ import { useEffect } from 'react'
 }
 
 
-export default loginpage
+export default LoginPage

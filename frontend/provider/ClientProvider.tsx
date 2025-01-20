@@ -3,7 +3,12 @@
 import { Provider } from 'react-redux';
 import  store from "@/store/store"
 
-const ClientProvider = ({ children }:any) => {
+type ClientProviderProps = {
+  children: React.ReactNode;
+};
+
+
+const ClientProvider = ({ children }: ClientProviderProps) => {
   return <Provider store={store}>{children}</Provider>;
 };
 

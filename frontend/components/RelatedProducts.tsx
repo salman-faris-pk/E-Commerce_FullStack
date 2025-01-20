@@ -4,7 +4,7 @@ import { usePathname } from 'next/navigation';
 import { CollectionItem } from './CollectionItem';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { backendUrl } from '@/app/page';
+import { backendUrl } from '../utils/backendUrl';
 import { toast } from 'react-toastify';
 
 
@@ -44,9 +44,13 @@ export const RelatedProducts = ({_id,category,subCategory}: AllCategories) => {
                 toast.error(res.data.message);
                 return [];
             }
-        } catch (error) {
-            toast.error('An error occurred while fetching related products.');
-            return [];
+        } catch (error:unknown) {
+          if (error instanceof Error) {
+            console.error("Error fetching related products:", error.message);
+            } else {
+            console.error("An unknown error occurred while fetching related products");
+            }
+          return [];
         }
     }
 });
@@ -65,7 +69,7 @@ export const RelatedProducts = ({_id,category,subCategory}: AllCategories) => {
         
         { pathname === `/product/${_id}` &&
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
-           {related && related.map((item:any)=> (
+           {related && related.map((item)=> (
               <ProductItem _id={item._id} image={item.image[0]} name={item.name} price={item.price} key={item._id}/>
            ))}
         </div>
@@ -74,7 +78,7 @@ export const RelatedProducts = ({_id,category,subCategory}: AllCategories) => {
           
       { pathname === `/collection/${_id}` &&
         <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
-           {related && related.map((item:any)=> (
+           {related && related.map((item)=> (
               <CollectionItem id={item._id} image={item.image[0]} name={item.name} price={item.price} key={item._id}/>
            ))}
         </div>

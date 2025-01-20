@@ -1,4 +1,4 @@
-import { backendUrl } from "@/app/page";
+import { backendUrl } from "../utils/backendUrl";
 import { RootState } from "@/store/store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
@@ -6,6 +6,9 @@ import React, { useState } from "react";
 import { IoSend } from "react-icons/io5";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import { Cooment } from "../app/types/AllTypes"
+
+
 
 export const DescriptionReview = ({productId}:{productId:string}) => { 
     
@@ -13,6 +16,7 @@ export const DescriptionReview = ({productId}:{productId:string}) => {
   const [message,setMessage]=useState<string>('')
   const queryClient = useQueryClient();
   const { token }=useSelector((state: RootState) => state.user);
+
  
   const handleSendComment=async()=>{
     try {
@@ -31,14 +35,18 @@ export const DescriptionReview = ({productId}:{productId:string}) => {
         toast.error(response.data.message)
       }
       
-    } catch (error:any) {
-      toast.error(error.message)
+    } catch (error:unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+        } else {
+        toast.error("An unknown error occurred");
+       }
     }
   }
 
 
 
-   const {data: allComents}=useQuery({
+   const {data: allComents}=useQuery<Cooment[],Error>({
     queryKey:["comments",productId],
     queryFn:async()=>{
       try {
@@ -48,8 +56,12 @@ export const DescriptionReview = ({productId}:{productId:string}) => {
         }else{
           toast.error(response.data.message)
         }
-      } catch (error:any) {
-       toast.error(error.message)
+      } catch (error: unknown) {
+        if (error instanceof Error) {
+          toast.error(error.message);
+          } else {
+          toast.error("An unknown error occurred");
+         }
         
       }
     },
@@ -116,7 +128,7 @@ export const DescriptionReview = ({productId}:{productId:string}) => {
                 )}
             
             <div className="max-h-60 overflow-y-auto ">
-             {comments&&comments.map((coments:any,index:any)=>(
+             {comments&&comments.map((coments,index)=>(
                <div className="space-y-3 p-3 rounded-md" key={index}>
                <div className="border p-4 rounded-md mt-1">
                  <h3 className="font-semibold text-md">{coments.username}</h3>

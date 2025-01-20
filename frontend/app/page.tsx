@@ -6,9 +6,6 @@ import { OurPolicy } from "@/components/OurPolicy";
 
 
 
-export const backendUrl: string | undefined=process.env.NEXT_PUBLIC_BACKEND_URL
-
-
 export default function Home() {
   return (
    <div>
