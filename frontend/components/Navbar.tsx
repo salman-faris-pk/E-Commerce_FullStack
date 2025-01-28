@@ -128,9 +128,12 @@ export const Navbar = () => {
           </span> 
           {token && 
           <div className='group-hover:block hidden absolute dropdown-menu right-0 pt-4 z-50 shadow-sm opacity-95'>
-              <div className='flex flex-col py-1 w-fit px-1 bg-white text-gray-500 rounded'>
+              <div className='flex flex-col py-2 gap-y-1 w-fit px-3 bg-white text-gray-500 rounded'>
                     <p className='cursor-pointer text-sm text-black hover:bg-gray-400 hover:text-white px-2 rounded-sm'>Profile</p>
                     <p className='cursor-pointer text-sm text-black hover:bg-gray-400 hover:text-white px-2 rounded-sm'onClick={()=>router.push("/orders")}>Orders</p>
+                    <a href='https://e-commerce-admin-alpha-steel.vercel.app' target="_blank" className='hidden sm:block cursor-pointer text-sm text-black hover:bg-gray-400 hover:text-white px-2 rounded-sm'>
+                        Admin
+                    </a>
                     <p className='cursor-pointer text-sm text-black hover:bg-gray-400 hover:text-white px-2 rounded-sm' onClick={Logout}>Logout</p>
               </div>
           </div>
@@ -163,6 +166,10 @@ export const Navbar = () => {
                     <Link href='/collection' onClick={()=> setVisible(false)} className={`py-2 pl-6 border ${isActive('/collection') ? "bg-black text-white" : ""}`}>COLLECTION</Link>
                     <Link href='/about' onClick={()=> setVisible(false)} className={`py-2 pl-6 border ${isActive('/about') ? "bg-black text-white" : ""}`}>ABOUT</Link>
                     <Link href='/contact' onClick={()=> setVisible(false)} className={`py-2 pl-6 border ${isActive('/contact') ? "bg-black text-white" : ""}`}>CONTACT</Link>
+                    <a href='https://e-commerce-admin-alpha-steel.vercel.app' target="_blank" onClick={() => setVisible(false)} className={`py-2 pl-6 border uppercase  ${isActive('https://e-commerce-admin-alpha-steel.vercel.app') ? "bg-black text-white" : ""}`}>
+                        Admin
+                    </a>
+
 
                 </div>
             </div>
