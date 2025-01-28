@@ -21,7 +21,7 @@ connectDB();
 connectCloudinary();
 
 const corsOptions = {
-  origin: ['http://localhost:5173',"http://localhost:5174"],
+  origin: ['https://ecomerce-frontend-mu.vercel.app',"https://e-commerce-admin-alpha-steel.vercel.app"],
   credentials: true,
 };
 app.use(express.json())
