@@ -16,6 +16,7 @@ import { useEffect } from 'react'
 
 
 
+
  const LoginPage = () => {
   
   const router=useRouter()
@@ -70,7 +71,7 @@ import { useEffect } from 'react'
     }
  
     useEffect(()=>{
-   if(token){
+    if(token){
      router.push("/")
    }
     },[token,router])

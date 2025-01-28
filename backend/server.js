@@ -8,7 +8,6 @@ import adminRouter from "./routes/adminRoute.js"
 import cookieParser from "cookie-parser";
 import productRouter from "./routes/productRoute.js";
 import orderRouter from "./routes/orderRoute.js";
-import job from "./cron.js"
 
 
 
@@ -17,16 +16,16 @@ const app = express()
 
 connectDB();
 
-job.start();
+
 
 connectCloudinary();
 
-// const corsOptions = {
-//   origin: ['https://agaci-admin-side.netlify.app'],
-//   credentials: true,
-// };
+const corsOptions = {
+  origin: ['http://localhost:5173',"http://localhost:5174"],
+  credentials: true,
+};
 app.use(express.json())
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(cookieParser());
 
 
@@ -37,9 +36,7 @@ app.use("/api/admin",adminRouter)
 app.use("/api/product",productRouter)
 app.use("/api/order",orderRouter)
 
-app.get('/', (req, res) => {
-  res.send('Hello, World!');
-});
+
 
     app.listen(port, () => {
       console.log(`Server is running on ${port}`);
