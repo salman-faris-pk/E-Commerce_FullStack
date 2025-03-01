@@ -1,68 +1,55 @@
-"use client"
-import Title from './Title'
-import { ProductItem } from './ProductItem'
-import axios from "axios"
-import { backendUrl } from '../utils/backendUrl';
-import { useQuery } from '@tanstack/react-query';
-import { toast } from 'react-toastify';
-import { AllProducts } from "../app/types/AllTypes"
+import Title from '@/components/Title';
+import { ProductItem } from '@/components/ProductItem';
+import { backendUrl } from '@/utils/backendUrl';
+import { AllProducts } from '@/app/types/AllTypes';
 
+const fetchLatestProducts = async () => {
+  try {
+    const res = await fetch(`${backendUrl}/api/product/latest-products`, {
+      cache: 'no-store',
+    });
+    const data = await res.json();
+    
+    if (!res.ok) {
+      throw new Error(data.message || 'Failed to fetch latest products');
+    }
 
+    return data.success ? data.lastTenProduct : [];
+  } catch (error) {
+    console.error('Error fetching latest products:', error);
+    return [];
+  }
+};
 
-const LatestCollections = () => {
-
-
- const {data: latestdata,isLoading}=useQuery<AllProducts[]>({
-  queryKey:["latestpro"],
-  queryFn: async()=>{
-      try {
-        const response= await axios.get(backendUrl+"/api/product/latest-products");
-         if(response.data.success){
-           return response.data.lastTenProduct;
-         }else{
-          toast.error(response.data.message)
-         }
-        
-      } catch (error:unknown) {
-        if (error instanceof Error) {
-          toast.error(error.message);
-          } else {
-          toast.error("An unknown error occurred");
-         }
-      }
-  },
-
-    refetchInterval: 10000,
- })
-
-
+const LatestCollections = async () => {
+  const latestData: AllProducts[] = await fetchLatestProducts();
 
   return (
     <div className='my-10'>
-       <div className='text-center py-8 text-3xl'>
-          <Title text1={'LATEST'} text2={'COLLECTIONS'}/>
-          <p className='w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600'>
+      <div className='text-center py-8 text-3xl'>
+        <Title text1='LATEST' text2='COLLECTIONS' />
+        <p className='w-3/4 m-auto text-xs sm:text-sm md:text-base text-gray-600'>
           Explore our latest collection of must-have dresses, curated to elevate your style and comfort.
-          </p>
-       </div>
-        {
-          isLoading && <p>Loading.....</p>
-        }
-
-       {latestdata && (
-           <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
-           {
-               latestdata.map((item:AllProducts)=> (
-                   <ProductItem _id={item._id} image={item.image[0]} name={item.name} price={item.price} key={item._id}/>
-               ))
-           }
+        </p>
+      </div>
+      
+      {latestData.length === 0 ? (
+        <p className='text-center text-gray-500'>No latest collections available.</p>
+      ) : (
+        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
+          {latestData.map((item) => (
+            <ProductItem
+              key={item._id}
+              _id={item._id}
+              image={item.image[0]}
+              name={item.name}
+              price={item.price}
+            />
+          ))}
         </div>
-       )}
-
-        
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default LatestCollections
-
+export default LatestCollections;

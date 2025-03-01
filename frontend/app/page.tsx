@@ -1,4 +1,4 @@
-import { BestSeller } from "@/components/BestSeller";
+import BestSeller from "@/components/BestSeller";
 import Hero from "@/components/Hero";
 import LatestCollections from "@/components/LatestCollections";
 import { Newsletter } from "@/components/Newsletter";
