@@ -20,7 +20,9 @@ const Footer = () => {
                 <li>Home</li>
                 <li>About us</li>
                 <li>Delivery</li>
-                <li>Privacy policy</li>
+                <a href='https://e-commerce-admin-alpha-steel.vercel.app' target="_blank" className='hidden sm:block cursor-pointer text-sm'>
+                        Admin
+                </a>
             </ul>
          </div>
 

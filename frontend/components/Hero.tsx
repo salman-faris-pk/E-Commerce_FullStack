@@ -32,7 +32,7 @@ const Hero: React.FC = () => {
            
       <Swiper className='w-full sm:w-1/2'
       modules={[Autoplay]} 
-      spaceBetween={50}
+      spaceBetween={0}
       slidesPerView={1}
       autoplay={{ delay: 5000, disableOnInteraction: false }}
     >
