@@ -15,14 +15,13 @@ import { setToken } from '@/features/userSlice';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { backendUrl } from '../utils/backendUrl';
-
-
+import Image from 'next/image';
+import logo from "@/public/logo.png"
 
 
 
 export const Navbar = () => {
  
-
   const dispatch: AppDispatch = useDispatch();
   const pathname = usePathname();
 
@@ -86,7 +85,7 @@ export const Navbar = () => {
   return (
     <div className='flex items-center justify-between py-6 font-medium'>
       <Link href="/">
-      <img src='/logo.png' className='w-28 sm:w-36' alt='Logo' />
+      <Image src={logo} className='w-28 sm:w-36' alt='Logo' />
       </Link>
 
       <ul className='hidden sm:flex gap-5 text-sm text-gray-700'>

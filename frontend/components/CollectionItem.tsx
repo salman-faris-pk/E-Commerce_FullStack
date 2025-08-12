@@ -1,4 +1,5 @@
 "use client"
+import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 
@@ -12,12 +13,10 @@ type productItem={
 export const CollectionItem = ({id,image,name,price}:productItem) => {
     const currency="₹";
 
-
-  
   return (
     <Link href={`/collection/${id}`} className='text-gray-700 cursor-pointer'>
       <div className='overflow-hidden'>
-        <img src={image} alt='' className='hover:scale-110 transition ease-in-out'/>
+        <Image src={image} width={195} height={224} alt='thgtr' className='hover:scale-110 transition ease-in-out'/>
       </div>
        <p className='pt-3 pb-1 text-sm'>{name}</p>
        <p className='text-sm font-medium'>{currency}{price}</p>

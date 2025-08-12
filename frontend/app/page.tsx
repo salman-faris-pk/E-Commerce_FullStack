@@ -9,7 +9,6 @@ import { OurPolicy } from "@/components/OurPolicy";
 export default function Home() {
   return (
    <div>
-
       <Hero />
       <LatestCollections />
       <BestSeller />
