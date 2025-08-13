@@ -3,33 +3,17 @@ import React, { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Image from "next/image";
 import a1 from "@/public/assets/a1_n14v9i.webp"
-import a2 from "@/public/assets/a2_yxcrsb.webp"
-import a3 from "@/public/assets/aa_m86dob.webp"
-import a4 from "@/public/assets/a7_bb22kb.webp"
-import a5 from "@/public/assets/a4_egi2am.webp"
-import a6 from "@/public/assets/a10_c28kao.webp"
-import a7 from "@/public/assets/cc_phk3wp.webp"
 
-
-
-
-
-
-
-// const images = [
-//    "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061444/a1_n14v9i.webp",
-//    "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061722/a2_yxcrsb.webp",
-//    'https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061071/aa_m86dob.webp', 
-//    "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062083/a7_bb22kb.webp",
-//    "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061884/a4_egi2am.webp", 
-//    "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062250/a10_c28kao.webp",
-//    "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062811/cc_phk3wp.webp"
-//   ];
 
 const images = [
-   a1,a2,a3,a4,a5,a6,a7
+   a1,
+   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061722/a2_yxcrsb.webp",
+   'https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061071/aa_m86dob.webp', 
+   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062083/a7_bb22kb.webp",
+   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061884/a4_egi2am.webp", 
+   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062250/a10_c28kao.webp",
+   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062811/cc_phk3wp.webp"
   ];
-
 
 
 export const HeroCarousel= () => {
