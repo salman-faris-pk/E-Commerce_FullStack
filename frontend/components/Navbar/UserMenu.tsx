@@ -105,7 +105,6 @@ export default function UserMenuWithCart() {
     );
   }, [token, router, handleLogout]);
 
-  if (!token) return null;
 
 const isLoading = isUserLoading || isUserFetching || isCartLoading || isCartFetching;
 
@@ -134,7 +133,7 @@ const isLoading = isUserLoading || isUserFetching || isCartLoading || isCartFetc
               {initials}
             </div>
           ) : (
-            <User className="text-gray-700 hover:text-black transition-colors mt-1.5" size={20} />
+            <User className="text-gray-700 hover:text-black transition-colors mt-1.5" size={24} />
           )}
         </button>
         {userDropdown}

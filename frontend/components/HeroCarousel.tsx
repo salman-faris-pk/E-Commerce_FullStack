@@ -41,6 +41,7 @@ export const HeroCarousel= () => {
               src={src}
               alt={`hero-img-${index}`}
               fill
+              loading="eager"
               quality={100}
               priority={index === 0}
               className="object-cover"
