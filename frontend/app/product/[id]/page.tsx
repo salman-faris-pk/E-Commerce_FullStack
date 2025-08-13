@@ -161,6 +161,7 @@ const ProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
                   <Image
                     src={image}
                     fill
+                    loading="eager"
                     className="object-cover" 
                     alt="Main product image"
                   />

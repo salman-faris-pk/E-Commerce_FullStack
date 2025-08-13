@@ -11,7 +11,7 @@ export const ProductItem = ({_id,image,name,price}:productItemProp) => {
   return (
     <Link href={`/product/${_id}`} className='text-gray-700 cursor-pointer'>
       <div className='overflow-hidden'>
-        <Image src={image} alt='imges' width={195} height={224} quality={100} className='hover:scale-110 transition ease-in-out'/>
+        <Image src={image} alt='imges' width={195} height={224} quality={80} loading='lazy' className='hover:scale-110 transition ease-in-out'/>
       </div>
        <p className='pt-3 pb-1 text-sm'>{name}</p>
        <p className='text-sm font-medium'>{currency}{price}</p>

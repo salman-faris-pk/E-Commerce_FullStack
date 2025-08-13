@@ -200,7 +200,7 @@ type CartData = CartItem[];
 
        <div className='flex justify-end my-20 '>
         <div className='w-full sm:w-[450px]'>
-          {isLoading &&  <div className="border-t-4 border-blue-500 border-solid w-5 h-5 rounded-full animate-spin"></div>}
+          {isLoading &&  <div className="border-t-4 border-black border-solid w-5 h-5 transition-all duration-300 rounded-full animate-spin"></div>}
          <CartTotal />
          {cartData&&cartData.length === 0 ? (
              <div className='w-full text-end'>

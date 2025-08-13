@@ -19,6 +19,7 @@ const Aboutpage = () => {
           sizes="100vw"
           width={450}
           height={458}
+          loading="eager"
           style={{
             height: "auto",
             width: "100%",

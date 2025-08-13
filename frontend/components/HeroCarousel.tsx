@@ -1,32 +1,20 @@
 "use client";
 import React, { useEffect } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import Image from "next/image";
-import a1 from "@/public/assets/a1_n14v9i.webp"
+import Image, { StaticImageData } from "next/image";
 
+interface HeroCarouselProps {
+  images: (string | StaticImageData)[];
+}
 
-const images = [
-   a1,
-   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061722/a2_yxcrsb.webp",
-   'https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061071/aa_m86dob.webp', 
-   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062083/a7_bb22kb.webp",
-   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755061884/a4_egi2am.webp", 
-   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062250/a10_c28kao.webp",
-   "https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062811/cc_phk3wp.webp"
-  ];
-
-
-export const HeroCarousel= () => {
-
+export const HeroCarousel: React.FC<HeroCarouselProps> = ({ images }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
 
   useEffect(() => {
     if (!emblaApi) return;
-
     const autoplayInterval = setInterval(() => {
       emblaApi.scrollNext();
     }, 5000);
-
     return () => clearInterval(autoplayInterval);
   }, [emblaApi]);
 

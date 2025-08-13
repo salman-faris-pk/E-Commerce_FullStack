@@ -16,6 +16,7 @@ const Contactpage = () => {
               alt='conatct-img'
               width={480}
               height={480}
+              loading="eager"
              className='w-full md:max-w-[480px]'
             />
             <div className='flex flex-col justify-center items-start gap-6'>
