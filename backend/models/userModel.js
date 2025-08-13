@@ -26,7 +26,7 @@ const userSchema= new mongoose.Schema({
 
 },
 {
-    minimize: false
+    minimize: false // field always exists,even its empty
 });
 
 

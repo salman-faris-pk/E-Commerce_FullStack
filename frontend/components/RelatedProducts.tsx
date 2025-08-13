@@ -5,7 +5,7 @@ import { CollectionItem } from './CollectionItem';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { backendUrl } from '../utils/backendUrl';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 
 

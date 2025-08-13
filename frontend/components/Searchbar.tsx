@@ -3,9 +3,8 @@ import { setSearch, setShowSearch } from "@/features/ProductSlice";
 import { RootState } from "@/store/store";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { CiSearch } from "react-icons/ci";
-import { IoMdClose } from "react-icons/io";
 import { usePathname } from "next/navigation";
+import { Search, X } from "lucide-react";
 
 export const Searchbar = () => {
   const dispatch = useDispatch();
@@ -37,10 +36,10 @@ export const Searchbar = () => {
           onChange={(e) => dispatch(setSearch(e.target.value))}
         />
 
-        <CiSearch size={22} className="text-black" />
+        <Search size={22} className="text-black" />
       </div>
 
-      <IoMdClose
+      <X
         className="inline cursor-pointer text-gray-500"
         size={20}
         onClick={() => {

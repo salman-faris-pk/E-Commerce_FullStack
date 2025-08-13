@@ -2,7 +2,6 @@ import { Newsletter } from '@/components/Newsletter'
 import Title from '@/components/Title'
 import Image from 'next/image'
 import React from 'react'
-import contactImg from "@/public/contactImg.png"
 
 const Contactpage = () => {
   return (
@@ -13,7 +12,10 @@ const Contactpage = () => {
         </div>
 
         <div className='my-10 flex flex-col justify-center md:flex-row gap-10 mb-28'>
-            <Image src={contactImg} alt='conatct-img'
+            <Image src='https://res.cloudinary.com/dqqcpkeup/image/upload/v1755063200/contactImg_au0sej.webp' 
+              alt='conatct-img'
+              width={480}
+              height={480}
              className='w-full md:max-w-[480px]'
             />
             <div className='flex flex-col justify-center items-start gap-6'>

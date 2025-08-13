@@ -3,10 +3,10 @@ import { RootState } from "@/store/store";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useState } from "react";
-import { IoSend } from "react-icons/io5";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { Cooment } from "../app/types/AllTypes"
+import { Send } from "lucide-react";
 
 
 
@@ -122,7 +122,7 @@ export const DescriptionReview = ({productId}:{productId:string}) => {
                  onChange={(e:React.ChangeEvent<HTMLInputElement>)=> setMessage(e.target.value)}
                  />
                  <button className="p-2 bg-gray-200 text-black/80 rounded-md" type="button"  onClick={handleSendComment}>
-                 <IoSend size={15}/>
+                 <Send size={15}/>
                 </button>
                </div>
                 )}

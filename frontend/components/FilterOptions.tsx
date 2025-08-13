@@ -1,7 +1,6 @@
 "use client";
 
 import { useCallback } from "react";
-import { MdArrowForwardIos } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import {
@@ -9,6 +8,8 @@ import {
   setSubCategory,
   toggleShowFilter,
 } from "@/features/ProductSlice";
+import { ChevronRight } from "lucide-react";
+
 
 export const FilterOptions = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -53,7 +54,7 @@ export const FilterOptions = () => {
         onClick={toggleFilter}
       >
         FILTERS{" "}
-        <MdArrowForwardIos
+        <ChevronRight
           size={16}
           className={`text-gray-300 sm:hidden ${showFilter ? "rotate-90" : ""}`}
         />

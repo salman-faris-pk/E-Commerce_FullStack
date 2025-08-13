@@ -6,9 +6,11 @@ import { useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
-import { toast } from 'react-toastify'
+import { toast } from 'sonner'
 import { AllFormData,Order,RazorpayResponse} from "../../types/AllTypes"
-
+import Image from 'next/image'
+import stripeImge from "@/public/stripe.png"
+import razorimg from "@/public/razor.png"
 
 
 
@@ -164,21 +166,21 @@ const PlaceOrderpage = () => {
                 <Title text1={'DELIVERY'} text2={'INFORMATION'}/>
           </div>
           <div className='flex gap-3'>
-             <input type="text" placeholder='First name' value={formData.firstName} name='firstName' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
-             <input type="text" placeholder='Last name' value={formData.lastName} name='lastName' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
+             <input type="text" placeholder='First name' value={formData.firstName ?? ''} name='firstName' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
+             <input type="text" placeholder='Last name' value={formData.lastName ?? ''} name='lastName' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
           </div>
 
-           <input type="email" placeholder='Email address' value={formData.email} name='email' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
-            <input type="text" placeholder='Street' value={formData.street} name='street' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
+           <input type="email" placeholder='Email address' value={formData.email ?? ''} name='email' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
+            <input type="text" placeholder='Street' value={formData.street ?? ''} name='street' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
         
             <div className='grid grid-cols-2 gap-3'>
-             <input type="text" placeholder='City' value={formData.city} name='city' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
-             <input type="text" placeholder='State' value={formData.state} name='state' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
-             <input type="number"  value={formData.zipcode === null ? '' : formData.zipcode} placeholder='Zipcode' name='zipcode' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full' maxLength={6}/>
-             <input type="text" placeholder='Country' value={formData.country} name='country' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
+             <input type="text" placeholder='City' value={formData.city ?? ''} name='city' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
+             <input type="text" placeholder='State' value={formData.state ?? ''} name='state' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
+             <input type="number"  value={formData.zipcode ?? ''} placeholder='Zipcode' name='zipcode' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full' maxLength={6}/>
+             <input type="text" placeholder='Country' value={formData.country ?? ''} name='country' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full'/>
             </div>
 
-            <input type="number"  value={formData.phone === null ? '' : formData.phone} placeholder='Phone'  name='phone' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full' maxLength={10}/>
+            <input type="number"  value={formData.phone ?? ''} placeholder='Phone'  name='phone' onChange={onChangeHandler} required className='border border-gray-300 rounded py-1.5 px-3.5 w-full' maxLength={10}/>
              
       </div>
 
@@ -195,11 +197,11 @@ const PlaceOrderpage = () => {
               <div className='flex gap-3 flex-col lg:flex-row'>
                   <div className='flex items-center gap-3 border p-2 px-3 cursor-pointer' onClick={()=> setSelected('stripe')}>
                       <span className={`min-w-3.5 h-3.5 border rounded-full ${selected === "stripe"? "bg-green-500" : ""}`}></span>
-                      <img src='/stripe.png'alt='stripe-img'className='h-5 mx-4'/>
+                      <Image src={stripeImge} alt='stripe-img'className='h-5 mx-4'/>
                   </div>
                   <div className='flex items-center gap-3 border p-2 px-3 cursor-pointer' onClick={()=> setSelected('razor')}>
                       <span className={`min-w-3.5 h-3.5 border rounded-full ${selected === "razor" ? "bg-green-500" : ""}`}></span>
-                      <img src='/razor.png'alt='razorpay-img'className='h-5 mx-4'/>
+                      <Image src={razorimg} alt='razorpay-img'className='h-5 mx-4'/>
                   </div>
                   <div className='flex items-center gap-3 border p-2 px-3 cursor-pointer'onClick={()=> setSelected('cod')}>
                       <span className={`min-w-3.5 h-3.5 border rounded-full ${selected === "cod"? "bg-green-500" : ""}`} ></span>

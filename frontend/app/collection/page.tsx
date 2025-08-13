@@ -1,14 +1,14 @@
 "use client";
 
 import Title from "@/components/Title";
-import { useCallback, useDeferredValue, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store/store";
 import { setSortType } from "@/features/ProductSlice";
 import { CollectionItem } from "@/components/CollectionItem";
 import { backendUrl } from "../../utils/backendUrl";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { AllProducts } from "../types/AllTypes";
 import { FilterOptions } from "@/components/FilterOptions";
@@ -22,11 +22,10 @@ const CollectionPage = () => {
     (state: RootState) => state.products.subcategory
   );
 
-   const deferredSearch = useDeferredValue(search);
 
   const query = useMemo(
     () => ({
-      search: deferredSearch,
+      search: search,
       category: Array.isArray(category) ? category.join(",") : category,
       subCategory: Array.isArray(subcategory)
         ? subcategory.join(",")

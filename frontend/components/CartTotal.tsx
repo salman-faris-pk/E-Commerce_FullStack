@@ -6,7 +6,7 @@ import axios from 'axios';
 import { backendUrl } from '../utils/backendUrl';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store/store';
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 
 
 type Total={

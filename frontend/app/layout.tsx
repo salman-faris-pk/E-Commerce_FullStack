@@ -1,13 +1,12 @@
 import { Outfit, Prata } from "next/font/google";
 import "./globals.css";
-import { Navbar } from "@/components/Navbar";
+import Navbar from "@/components/Navbar/Navbar"
 import Footer from "@/components/Footer";
 import ClientProvider from "@/provider/ClientProvider" 
 import type { Metadata } from "next";
 import { Searchbar } from "@/components/Searchbar";
-import { ToastContainer} from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import QueryProvider from "@/provider/queryProvider";
+import { Toaster } from "sonner";
 import Script from "next/script";
 
 
@@ -50,7 +49,7 @@ export default function RootLayout({
         <div className="px-4 sm:px-[5vw] md:px-[7vw] lg:px-[9vw]">
           <QueryProvider>
              <ClientProvider>
-                <ToastContainer/>
+                <Toaster position="top-right" duration={2000} richColors/>
                   <Navbar />
                   <Searchbar />
                  {children}

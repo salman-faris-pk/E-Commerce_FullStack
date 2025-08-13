@@ -9,7 +9,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { use } from 'react';
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { toast } from "sonner";
 import star from "@/public/star.png"
 import halfstar from "@/public/halfStar.png"
 
@@ -81,7 +81,7 @@ const ProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       queryClient.invalidateQueries({ queryKey: ["totalcount"] });
-      toast.success("Item added to cart");
+      toast.success("product added to cart");
     },
   });
 
@@ -194,7 +194,7 @@ const ProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
                       className={`border py-2 px-4 bg-gray-100 ${
                         item === size ? "border-2 border-orange-500" : ""
                       }`}
-                      onClick={() => setSize(item)}
+                      onClick={() => setSize(prev => prev === item ? "" : item)}
                     >
                       {item}
                     </button>
@@ -202,7 +202,7 @@ const ProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
                 </div>
               </div>
 
-              {token ? (
+              {token && size ? (
                 <button
                   className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"
                   onClick={() => singleproduct && addToCart({

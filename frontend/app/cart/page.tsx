@@ -2,14 +2,15 @@
 import Title from '@/components/Title'
 import { RootState } from '@/store/store'
 import React from 'react'
-import { RiDeleteBin6Line } from "react-icons/ri";
 import { CartTotal } from '@/components/CartTotal'
 import { useRouter } from 'next/navigation'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
 import { backendUrl } from '../../utils/backendUrl'
-import { toast } from 'react-toastify'
+import { toast } from 'sonner'
 import { useSelector } from 'react-redux';
+import Image from 'next/image'
+import { Trash2 } from 'lucide-react'
 
 
 interface Product {
@@ -154,9 +155,11 @@ type CartData = CartItem[];
           className='py-4 border-t border-b text-gray-700 grid grid-cols-[4fr_0.5fr_0.5fr] sm:grid-cols-[4fr_2fr_0.5fr] items-center gap-4'
         >
           <div className='flex items-start gap-6'>
-            <img
+            <Image
               src={product&&product.image[0]}
               alt='img'
+              width={64}
+              height={70}
               className='w-16 sm:w-20'
             />
             <div>
@@ -184,7 +187,7 @@ type CartData = CartItem[];
             onChange={(e) => handleQuantityChange(item._id, parseInt(e.target.value))}
             
           />
-          <RiDeleteBin6Line
+          <Trash2
             className='cursor-pointer mr-4 text-gray-500'
             size={24}
             onClick={() => handleDelete(item._id)}

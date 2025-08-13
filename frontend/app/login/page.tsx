@@ -10,7 +10,7 @@ import {
   setCurrentState,
   setToken,
 } from '@/features/userSlice';
-import { toast } from 'react-toastify'
+import { toast } from 'sonner'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 

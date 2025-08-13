@@ -1,6 +1,7 @@
 import validator from "validator";
 import bcrypt from "bcrypt";
 import userModel from "../models/userModel.js";
+import orderModel from "../models/orderModel.js";
 import jwt from "jsonwebtoken";
 
 
@@ -207,8 +208,8 @@ const updateCart = async (req, res) => {
 
 const cartCount = async (req, res) => {
   
-  const {userId}=req.body;
-
+  const {userId}=req.body;  //from auth middleare 
+  
   try {
     const user = await userModel.findById(userId);
 
@@ -310,6 +311,33 @@ const gettotalAmount=async(req,res)=>{
 }
 
 
+const getMe = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    if (!userId) {
+      return res.status(400).json({ success: false, message: "UserId is required" });
+    }
+
+    const user = await userModel.findById(userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const orderCount = await orderModel.countDocuments({ userId });
+
+    return res.status(200).json({
+      success: true,
+      user,
+      orderCount,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+
 
 export {
   loginUser,
@@ -319,5 +347,6 @@ export {
   updateCart,
   cartCount,
   deleteCart,
-  gettotalAmount
+  gettotalAmount,
+  getMe
 };

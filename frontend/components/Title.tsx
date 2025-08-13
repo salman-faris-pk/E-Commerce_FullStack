@@ -1,6 +1,5 @@
 
 
-
 const Title = ({text1,text2}: {text1:string; text2:string}) => {
    const isLatestCollections = text1 + text2 === "LATESTCOLLECTIONS";
 

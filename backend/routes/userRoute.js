@@ -1,5 +1,5 @@
 import express from "express"
-import {loginUser,registerUser,addtoCart,getCart,updateCart,cartCount,deleteCart,gettotalAmount} from "../controllers/userController.js"
+import {loginUser,registerUser,addtoCart,getCart,updateCart,cartCount,deleteCart,gettotalAmount, getMe} from "../controllers/userController.js"
 import authUser from "../middleware/auth.js"
 const userRouter=express.Router()
 
@@ -13,6 +13,8 @@ userRouter.patch("/updatecart",authUser,updateCart)
 userRouter.post("/cartcount",authUser,cartCount)
 userRouter.delete("/deletCart",authUser,deleteCart)
 userRouter.get("/totalprice",authUser,gettotalAmount)
+userRouter.get("/get-me",authUser,getMe)
+
 
 
 

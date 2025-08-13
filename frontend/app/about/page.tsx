@@ -2,7 +2,7 @@ import { Newsletter } from "@/components/Newsletter";
 import Title from "@/components/Title";
 import React from "react";
 import Image from "next/image";
-import abouImg from "@/public/aboutImg.png";
+
 
 const Aboutpage = () => {
   return (
@@ -13,10 +13,12 @@ const Aboutpage = () => {
 
       <div className="my-10 flex flex-col md:flex-row gap-16">
         <Image
-          src={abouImg}
+          src='https://res.cloudinary.com/dqqcpkeup/image/upload/v1755062995/aboutImg_v451eb.webp'
           alt="about-img"
           className="w-full md:max-w-[450px]"
           sizes="100vw"
+          width={450}
+          height={458}
           style={{
             height: "auto",
             width: "100%",
