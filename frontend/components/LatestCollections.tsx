@@ -6,7 +6,7 @@ import { AllProducts } from '@/app/types/AllTypes';
 const fetchLatestProducts = async () => {
   try {
     const res = await fetch(`${backendUrl}/api/product/latest-products`, {
-      cache: 'no-store',
+      next: { revalidate: 60 },
     });
     const data = await res.json();
     

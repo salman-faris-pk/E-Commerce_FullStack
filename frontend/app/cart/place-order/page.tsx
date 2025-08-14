@@ -11,6 +11,7 @@ import { AllFormData,Order,RazorpayResponse} from "../../types/AllTypes"
 import Image from 'next/image'
 import stripeImge from "@/public/stripe.png"
 import razorimg from "@/public/razor.png"
+import { RazorpayOptions } from '@/razorpay'
 
 
 
@@ -42,7 +43,7 @@ const PlaceOrderpage = () => {
 
 
   const initPay=(order: Order)=>{    //for opens a window of razorpay 
-      const options={
+      const options: RazorpayOptions ={
          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
          amount: order.amount,
          currency: order.currency,
