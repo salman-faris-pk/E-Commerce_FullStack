@@ -1,7 +1,7 @@
 import Title from '@/components/Title';
 import { ProductItem } from '@/components/ProductItem';
 import { backendUrl } from '@/utils/backendUrl';
-import { AllProducts } from '@/app/types/AllTypes';
+import { productItemProp } from '@/app/types/AllTypes';
 
 const fetchLatestProducts = async () => {
   try {
@@ -22,7 +22,7 @@ const fetchLatestProducts = async () => {
 };
 
 const LatestCollections = async () => {
-  const latestData: AllProducts[] = await fetchLatestProducts();
+  const latestData: productItemProp[] = await fetchLatestProducts();
 
   return (
     <div className='my-10'>

@@ -10,7 +10,7 @@ import { backendUrl } from "../../utils/backendUrl";
 import axios from "axios";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
-import { AllProducts } from "../types/AllTypes";
+import { productItemProp } from "../types/AllTypes";
 import { FilterOptions } from "@/components/FilterOptions";
 
 const CollectionPage = () => {
@@ -35,11 +35,12 @@ const CollectionPage = () => {
     [search, category, subcategory, sortType]
   );
 
-  const { data: Allproducts, isLoading } = useQuery<AllProducts[]>({
+  const { data: Allproducts, isLoading } = useQuery<productItemProp[]>({
     queryKey: ["allproducts", query],
     queryFn: async () => {
       const res = await axios.get(`${backendUrl}/api/product/all-collections`, {
         params: query,
+        timeout: 4000,
       });
       if (res.data.success) {
         return res.data.products;
@@ -52,7 +53,12 @@ const CollectionPage = () => {
     refetchOnWindowFocus: false,
     staleTime: 60 * 1000,
     gcTime: 5 * 60 * 1000,
+    retry: 2,
+    retryDelay: 1000,
   });
+
+  console.log("product",Allproducts);
+  
 
   const handleSortChange = useCallback(
     (e: React.ChangeEvent<HTMLSelectElement>) => {

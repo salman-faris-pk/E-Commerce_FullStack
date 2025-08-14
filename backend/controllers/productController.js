@@ -43,6 +43,7 @@ const singleProduct=async(req,res)=>{
 const latestproduct=async(req,res)=>{
     try {
         const lastTenProduct=await productModel.find({})
+        .select('_id name image price')
         .sort({ createdAt: -1 })
         .limit(10);
 
@@ -69,6 +70,7 @@ const latestproduct=async(req,res)=>{
 const bestsellers=async(req,res)=>{
     try {
         const bestSells=await productModel.find({bestseller:true})
+        .select('_id name image price')
         .sort({ createdAt: -1 })
         .limit(5);
         
@@ -115,9 +117,8 @@ const filterProducts = async (req, res) => {
         }
 
         let productsQuery = productModel.find(query)
+            .select('_id name image price')
             .lean()
-            .maxTimeMS(1000)
-            .allowDiskUse(true);
 
         if (search) {
             productsQuery = productsQuery.sort({ score: { $meta: "textScore" } });
@@ -131,7 +132,6 @@ const filterProducts = async (req, res) => {
         }
 
         const products = await productsQuery.exec();
-
         
         return res.json({
             success: true,
