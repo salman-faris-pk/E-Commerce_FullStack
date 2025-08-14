@@ -3,7 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react'
 
-type productItem={
+export type productItem={
     id:string;
     image: string;
     name: string;

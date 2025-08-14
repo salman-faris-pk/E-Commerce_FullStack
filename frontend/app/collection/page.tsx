@@ -50,6 +50,8 @@ const CollectionPage = () => {
     },
     placeholderData: (prevData) => prevData,
     refetchOnWindowFocus: false,
+    staleTime: 60 * 1000,
+    gcTime: 5 * 60 * 1000,
   });
 
   const handleSortChange = useCallback(

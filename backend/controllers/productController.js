@@ -94,49 +94,58 @@ const bestsellers=async(req,res)=>{
 
 
 
+
 const filterProducts = async (req, res) => {
     try {
         const { search, category, subCategory, sortType } = req.query;
-        let query = {};
-
-      
+        const query = {};
 
         if (search) {
-            query.name = { $regex: search, $options: 'i' }; 
+            query.$text = { $search: search };
         }
 
         if (category) {
             const categoriesArray = Array.isArray(category) ? category : category.split(',');
-            query.category = { $in: categoriesArray }; 
+            query.category = categoriesArray.length === 1 ? categoriesArray[0] : { $in: categoriesArray };
         }
 
         if (subCategory) {
             const subcategoriesArray = Array.isArray(subCategory) ? subCategory : subCategory.split(',');
-            query.subCategory = { $in: subcategoriesArray }; 
+            query.subCategory = subcategoriesArray.length === 1 ? subcategoriesArray[0] : { $in: subcategoriesArray };
         }
 
-        let productsQuery = productModel.find(query);
+        let productsQuery = productModel.find(query)
+            .lean()
+            .maxTimeMS(1000)
+            .allowDiskUse(true);
 
-        if (sortType === "low-high") {
-            productsQuery = productsQuery.sort({ price: 1 }); 
+        if (search) {
+            productsQuery = productsQuery.sort({ score: { $meta: "textScore" } });
+        } 
+        else if (sortType === "low-high") {
+            productsQuery = productsQuery.sort({ price: 1 }).hint({ price: 1 });
         } else if (sortType === "high-low") {
-            productsQuery = productsQuery.sort({ price: -1 }); 
+            productsQuery = productsQuery.sort({ price: -1 }).hint({ price: 1 });
+        }else {
+            productsQuery.sort({ createdAt: -1 });
         }
 
         const products = await productsQuery.exec();
 
-        res.json({
+        
+        return res.json({
             success: true,
             products
         });
 
     } catch (error) {
-        console.error(error);
-        return res.json({success:false,message:error.message})
-         
+        console.error('Filter error:', error);
+        return res.status(500).json({
+            success: false,
+            message: 'Internal server error'
+        });
     }
-}
-
+};
 
 
 

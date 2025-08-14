@@ -1,53 +1,65 @@
 import mongoose from "mongoose";
 
-
-const productSchema= new mongoose.Schema({
-    name:{
-        type:String,
-        required:true
+const productSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true,
+        index: true
     },
-    description:{
-        type:String,
-        required:true
+    description: {
+        type: String,
+        required: true
     },
-    price:{
-        type:Number,
-        required:true
+    price: {
+        type: Number,
+        required: true,
+        index: true
     },
-    image:{
-        type: Array,
-        required:true
+    image: {
+        type: [String],
+        required: true
     },
-    category:{
-        type:String,
-        required:true
+    category: {
+        type: String,
+        required: true,
+        index: true
     },
-    subCategory:{
-        type:String,
-        required:true
+    subCategory: {
+        type: String,
+        required: true,
+        index: true
     },
-    sizes:{
-        type: Array,
-        required:true
+    sizes: {
+        type: [String],
+        required: true
     },
-    bestseller:{
-        type: Boolean
+    bestseller: {
+        type: Boolean,
+        index: true
     },
-  
-},{
-    timestamps:true
-})
+}, {
+    timestamps: true
+});
 
+productSchema.index({ 
+    name: 'text', 
+    description: 'text' 
+});
 
-productSchema.index({ name: 1 });
-productSchema.index({ category: 1 });
-productSchema.index({ subCategory: 1 });
-productSchema.index({ price: 1 });
-productSchema.index({ name: 1, category: 1, subCategory: 1, price: 1 });
+productSchema.index({ 
+    category: 1, 
+    subCategory: 1, 
+    price: 1 
+});
 
+productSchema.index({ 
+    category: 1, 
+    subCategory: 1, 
+    name: 'text' 
+});
 
+productSchema.index({ createdAt: -1 });
 
-const productModel= mongoose.models.product || mongoose.model("product",productSchema)
+const productModel = mongoose.models.product || mongoose.model("product", productSchema);
 
-
-export default productModel
+export default productModel;

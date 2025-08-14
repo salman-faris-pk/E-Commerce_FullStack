@@ -8,13 +8,13 @@ interface HeroCarouselProps {
 }
 
 export const HeroCarousel: React.FC<HeroCarouselProps> = ({ images }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 40 });
 
   useEffect(() => {
     if (!emblaApi) return;
     const autoplayInterval = setInterval(() => {
       emblaApi.scrollNext();
-    }, 5000);
+    }, 6000);
     return () => clearInterval(autoplayInterval);
   }, [emblaApi]);
 
@@ -30,9 +30,8 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({ images }) => {
               src={src}
               alt={`hero-img-${index}`}
               fill
-              loading="eager"
-              quality={100}
               priority={index === 0}
+              quality={index === 0 ? 100 : 80}
               className="object-cover"
               sizes="(max-width: 640px) 100vw, 50vw"
             />
