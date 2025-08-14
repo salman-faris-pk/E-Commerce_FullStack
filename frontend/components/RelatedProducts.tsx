@@ -1,7 +1,7 @@
 import Title from './Title';
 import { ProductItem } from './ProductItem';
 import { usePathname } from 'next/navigation';
-import { CollectionItem } from './CollectionItem';
+import { CollectionItem } from '../app/collection/CollectionItem';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { backendUrl } from '../utils/backendUrl';

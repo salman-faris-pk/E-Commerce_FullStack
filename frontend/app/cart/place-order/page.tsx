@@ -1,6 +1,6 @@
 "use client"
 import { backendUrl } from '../../../utils/backendUrl'
-import { CartTotal } from '@/components/CartTotal'
+import { CartTotal } from '@/app/cart/CartTotal'
 import Title from '@/components/Title'
 import { useQueryClient } from '@tanstack/react-query'
 import axios from 'axios'
