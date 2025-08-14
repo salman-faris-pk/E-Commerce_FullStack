@@ -40,7 +40,7 @@ const CollectionPage = () => {
     queryFn: async () => {
       const res = await axios.get(`${backendUrl}/api/product/all-collections`, {
         params: query,
-        timeout: 4000,
+        timeout: 5000,
       });
       if (res.data.success) {
         return res.data.products;
