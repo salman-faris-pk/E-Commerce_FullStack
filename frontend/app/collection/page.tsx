@@ -7,7 +7,7 @@ export default async function CollectionPage() {
 
   try {
     const res = await fetch(`${backendUrl}/api/product/all-collections`, {
-      cache: "no-store",
+      next: { revalidate: 60}
     });
 
     if (res.ok) {
