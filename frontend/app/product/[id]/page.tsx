@@ -32,13 +32,7 @@ const ProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [size, setSize] = useState("");
 
-  const TextSkeleton = ({ width = 'full' }: { width?: string }) => (
-    <div className={`bg-gray-200 animate-pulse h-4 rounded my-1 w-${width}`}></div>
-  );
-
-  const ButtonSkeleton = () => (
-    <div className="bg-gray-200 animate-pulse h-12 w-32 rounded"></div>
-  );
+ 
 
   const queryClient = useQueryClient();
   const { token } = useSelector((state: RootState) => state.user);
@@ -52,20 +46,41 @@ const ProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
         );
         if (response.data.success) return response.data.product;
         toast.error(response.data.message);
-        return undefined;
+        return null;
       } catch (error: unknown) {
         toast.error(error instanceof Error ? error.message : "An unknown error occurred");
-        return undefined;
+        return null;
       }
     },
+    staleTime: 5 * 60 * 1000,
+    gcTime: 10 * 60 * 1000,
+    enabled: !!productId,
   });
 
-  const { mutate: addToCart } = useMutation({
+  useEffect(() => {
+    if (singleproduct && singleproduct?.image?.length > 0) {
+      const firstImage = singleproduct.image[0];
+      setImage(firstImage);
+      setSelectedImage(firstImage);
+
+      singleproduct.image.forEach((imgSrc: string) => {
+        const img = new window.Image();
+        img.src = imgSrc;
+      });
+    }
+  }, [singleproduct]);
+
+   const addToCartMutation = useMutation({
     mutationFn: async ({ productId, size, price }: { 
       productId: string; 
       size: string; 
       price: number;
     }) => {
+      if (!token) {
+        toast.warning("Please login to add items to cart");
+        return;
+      }
+      
       try {
         const res = await axios.post(
           `${backendUrl}/api/user/add-to-cart`, 
@@ -81,38 +96,39 @@ const ProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       queryClient.invalidateQueries({ queryKey: ["totalcount"] });
-      toast.success("product added to cart");
+      toast.success("Product added to cart");
     },
   });
 
-  useEffect(() => {
-    if (singleproduct && singleproduct?.image?.length > 0) {
-      setImage(singleproduct.image[0]);
-      setSelectedImage(singleproduct.image[0]);
-    }
-  }, [singleproduct]);
+   const TextSkeleton = ({ width = 'full' }: { width?: string }) => (
+    <div className={`bg-gray-200 animate-pulse h-4 rounded my-1 w-${width}`}></div>
+  );
+
+  const ButtonSkeleton = () => (
+    <div className="bg-gray-200 animate-pulse h-12 w-32 rounded"></div>
+  );
 
 
-  return (
-    <div className="border-t-2 pt-10">
-      {isProductLoading ? (
+ if (isProductLoading) {
+    return (
+      <div className="border-t-2 pt-10">
         <div className="flex gap-12 flex-col sm:flex-row animate-pulse">
           <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
             <div className="flex sm:flex-col gap-3 sm:w-[18.7%] w-full">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-gray-200 w-full aspect-square"></div>
+                <div key={i} className="bg-gray-200 w-full aspect-square rounded"></div>
               ))}
             </div>
-            <div className="w-full sm:w-[80%] bg-gray-200 aspect-[4/5]"></div>
+            <div className="w-full sm:w-[80%] bg-gray-200 aspect-[4/5] rounded"></div>
           </div>
           <div className="flex-1 space-y-4">
-            <div className="bg-gray-200 h-8 w-64"></div>
+            <div className="bg-gray-200 h-8 w-64 rounded"></div>
             <div className="flex gap-1">
               {[...Array(5)].map((_, i) => (
                 <div key={i} className="bg-gray-200 w-4 h-4 rounded-full"></div>
               ))}
             </div>
-            <div className="bg-gray-200 h-8 w-32"></div>
+            <div className="bg-gray-200 h-8 w-32 rounded"></div>
             <div className="space-y-2">
               <TextSkeleton width="3/4" />
               <TextSkeleton width="1/2" />
@@ -122,128 +138,138 @@ const ProductPage = ({ params }: { params: Promise<{ id: string }> }) => {
               <TextSkeleton width="1/4" />
               <div className="flex gap-2">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className="bg-gray-200 w-12 h-10"></div>
+                  <div key={i} className="bg-gray-200 w-12 h-10 rounded"></div>
                 ))}
               </div>
             </div>
             <ButtonSkeleton />
           </div>
         </div>
-      ) : (
-        <>
-          <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
-            {/* Image Gallery */}
-            <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
-              <div className="flex sm:flex-col overflow-y-scroll justify-between sm:justify-normal sm:w-[18.7%] w-full gap-2">
-                {singleproduct?.image.map((item, index) => (
-                  <div 
-                    key={index} 
-                    className="relative w-[24%] sm:w-full sm:mb-3 flex-shrink-0 aspect-square"
-                  >
-                    <Image
-                      src={item}
-                      fill
-                      className={`object-cover cursor-pointer ${
-                        item === selectedImage ? "border-2 border-slate-200" : ""
-                      }`}
-                      onMouseEnter={() => setImage(item)}
-                      onMouseLeave={() => setImage(selectedImage)}
-                      onClick={() => setSelectedImage(item)}
-                      alt={`Product thumbnail ${index + 1}`}
-                    />
-                  </div>
-                ))}
-              </div>
-              
-              {/* Main Image */}
-              <div className="w-full sm:w-[80%] relative aspect-[4/5]">
-                 {image && (
-                  <Image
-                    src={image}
-                    fill
-                    loading="eager"
-                    className="object-cover" 
-                    alt="Main product image"
-                  />
-                )}
-              </div>
-            </div>
+      </div>
+    );
+  }
 
-            {/* Product Info */}
-            <div className="flex-1">
-              <h1 className="font-medium text-2xl mt-2">{singleproduct?.name}</h1>
-              
-              <div className="flex items-center gap-1 mt-2">
-                {[...Array(4)].map((_, i) => (
-                  <Image key={i} src={star} alt="rthgtr" className="w-3.5" />
-                ))}
-                <Image src={halfstar} alt="fgbng" className="w-3.5" />
-                <p className="pl-2">(122)</p>
-              </div>
+  if (!singleproduct) {
+    return (
+      <div className="border-t-2 pt-10 text-center py-20">
+        <p className="text-xl">Product not found</p>
+      </div>
+    );
+  }
 
-              <p className="mt-5 text-3xl font-medium">₹{singleproduct?.price}</p>
-              <p className="mt-5 text-gray-500 md:w-4/5">
-                {singleproduct?.description}
-              </p>
-              
-              <div className="flex flex-col gap-4 my-8">
-                <p>Select Size</p>
-                <div className="flex gap-2 flex-wrap">
-                  {singleproduct?.sizes.map((item, index) => (
-                    <button
-                      key={index}
-                      className={`border py-2 px-4 bg-gray-100 ${
-                        item === size ? "border-2 border-orange-500" : ""
-                      }`}
-                      onClick={() => setSize(prev => prev === item ? "" : item)}
-                    >
-                      {item}
-                    </button>
-                  ))}
-                </div>
-              </div>
 
-              {token && size ? (
+   return (
+    <div className="border-t-2 pt-10">
+      <div className="flex gap-12 sm:gap-12 flex-col sm:flex-row">
+        {/* Image Gallery */}
+        <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
+          <div className="flex sm:flex-col overflow-y-auto justify-between sm:justify-normal sm:w-[18.7%] w-full gap-2">
+            {singleproduct.image.map((item, index) => (
+              <div 
+                key={index} 
+                className="relative w-[24%] sm:w-full sm:mb-3 flex-shrink-0 aspect-square"
+              >
+                <Image
+                  src={item}
+                  fill
+                  className={`object-cover cursor-pointer rounded ${
+                    item === selectedImage ? "border-2 border-slate-200" : ""
+                  }`}
+                  onMouseEnter={() => setImage(item)}
+                  onMouseLeave={() => setImage(selectedImage)}
+                  onClick={() => setSelectedImage(item)}
+                  alt={`Product thumbnail ${index + 1}`}
+                  priority={index === 0}
+                  sizes="(max-width: 640px) 24vw, 18.7%"
+                />
+              </div>
+            ))}
+          </div>
+          
+          {/* Main Image */}
+          <div className="w-full sm:w-[80%] relative aspect-[4/5]">
+            {image && (
+              <Image
+                src={image}
+                fill
+                className="object-cover rounded" 
+                alt="Main product image"
+                priority
+                sizes="(max-width: 640px) 100vw, 80%"
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Product Info */}
+        <div className="flex-1">
+          <h1 className="font-medium text-2xl mt-2">{singleproduct.name}</h1>
+          
+          <div className="flex items-center gap-1 mt-2">
+            {[...Array(4)].map((_, i) => (
+              <Image key={i} src={star} alt="Full star" className="w-3.5" />
+            ))}
+            <Image src={halfstar} alt="Half star" className="w-3.5" />
+            <p className="pl-2">(122)</p>
+          </div>
+
+          <p className="mt-5 text-3xl font-medium">₹{singleproduct.price}</p>
+          <p className="mt-5 text-gray-500 md:w-4/5 line-clamp-4">
+            {singleproduct.description}
+          </p>
+          
+          <div className="flex flex-col gap-4 my-8">
+            <p className="font-medium">Select Size</p>
+            <div className="flex gap-2 flex-wrap">
+              {singleproduct.sizes.map((item, index) => (
                 <button
-                  className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"
-                  onClick={() => singleproduct && addToCart({
-                    productId: singleproduct._id,
-                    size,
-                    price: singleproduct.price,
-                  })}
+                  key={index}
+                  className={`border py-2 px-4 bg-gray-100 transition-all duration-200 ${
+                    item === size 
+                      ? "border-2 border-orange-500 bg-orange-50" 
+                      : "hover:bg-gray-200"
+                  }`}
+                  onClick={() => setSize(prev => prev === item ? "" : item)}
                 >
-                  ADD TO CART
+                  {item}
                 </button>
-              ) : (
-                <button
-                  className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700"
-                  onClick={() => toast.warning("Please login")}
-                >
-                  ADD TO CART
-                </button>
-              )}
-
-              <hr className="mt-8 sm:w-4/5" />
-              <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
-                <p>100% Original product.</p>
-                <p>Cash on delivery is available on this product.</p>
-                <p>Easy return and exchange policy within 7 days.</p>
-              </div>
+              ))}
             </div>
           </div>
 
-          {singleproduct && (
-            <>
-              <DescriptionReview productId={singleproduct._id} />
-              <RelatedProducts
-                _id={singleproduct._id}
-                category={singleproduct.category}
-                subCategory={singleproduct.subCategory}
-              />
-            </>
-          )}
-        </>
-      )}
+          <button
+            className="bg-black text-white px-8 py-3 text-sm active:bg-gray-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors duration-200"
+            disabled={!size}
+            onClick={() => {
+              if (!token) {
+                toast.warning("Please login to add items to cart");
+                return;
+              }
+              addToCartMutation.mutate({
+                productId: singleproduct._id,
+                size,
+                price: singleproduct.price,
+              });
+            }}
+          >
+            {addToCartMutation.isPending ? "ADDING..." : "ADD TO CART"}
+          </button>
+
+          <hr className="mt-8 sm:w-4/5" />
+          <div className="text-sm text-gray-500 mt-5 flex flex-col gap-1">
+            <p>100% Original product.</p>
+            <p>Cash on delivery is available on this product.</p>
+            <p>Easy return and exchange policy within 7 days.</p>
+          </div>
+        </div>
+      </div>
+
+      <DescriptionReview productId={singleproduct._id} />
+      <RelatedProducts
+        _id={singleproduct._id}
+        category={singleproduct.category}
+        subCategory={singleproduct.subCategory}
+      />
     </div>
   );
 };
