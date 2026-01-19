@@ -18,14 +18,18 @@ async function getProduct(id: string): Promise<Product | null> {
     const res = await fetch(
       `${backendUrl}/api/product/single-product/${id}`,
       {
-      method: "POST",
-      cache: "no-store",
-     }
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-store",
+      }
     );
-    
+
+    if (!res.ok) return null;
+
     const data = await res.json();
-    
-    return data.success ? data.product : null;
+    return data?.product ?? null;
   } catch {
     return null;
   }
@@ -36,9 +40,8 @@ export default async function CollectionItemPage({
 }: {
   params: { id: string };
 }) {
-  
   const product = await getProduct(params.id);
-  
+
   if (!product) {
     return (
       <div className="border-t-2 pt-10 text-center py-20">
@@ -47,7 +50,5 @@ export default async function CollectionItemPage({
     );
   }
 
-  return (
-    <ProductClient product={product} />
-  );
+  return <ProductClient product={product} />;
 }
