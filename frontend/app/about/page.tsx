@@ -1,6 +1,5 @@
 import Newsletter  from "@/components/Newsletter";
 import Title from "@/components/Title";
-import React from "react";
 import Image from "next/image";
 
 

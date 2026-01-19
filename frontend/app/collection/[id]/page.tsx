@@ -1,8 +1,7 @@
-
 import { backendUrl } from "@/utils/backendUrl";
 import ProductClient from "@/components/ProductClient";
 
-type Product = {
+interface Product {
   _id: string;
   bestseller?: boolean;
   category: string;
@@ -12,6 +11,10 @@ type Product = {
   price: number;
   sizes: string[];
   subCategory: string;
+};
+
+type PageProps = {
+  params: Promise<{ id: string }>;
 };
 
 async function getProduct(id: string): Promise<Product | null> {
@@ -31,11 +34,10 @@ async function getProduct(id: string): Promise<Product | null> {
   }
 }
 
-export default async function CollectionItemPage(props: { params: { id: string } }) {
-  const { params } = props;
+export default async function CollectionItemPage({ params }: PageProps) {
+  const { id } = await params;
 
-  const awaitedParams = await params;
-  const product = await getProduct(awaitedParams.id);
+  const product = await getProduct(id);
 
   if (!product) {
     return (

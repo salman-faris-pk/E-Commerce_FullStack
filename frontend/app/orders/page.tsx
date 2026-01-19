@@ -2,7 +2,6 @@
 import Title from "@/components/Title";
 import { useQuery } from '@tanstack/react-query';
 import axios from "axios";
-import React from "react";
 import { toast } from "sonner";
 import { backendUrl } from "../../utils/backendUrl";
 import { OrdersResponse,OrderItem} from "../types/AllTypes"

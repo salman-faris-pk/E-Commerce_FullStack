@@ -1,7 +1,7 @@
 "use client";
 import { setSearch, setShowSearch } from "@/features/ProductSlice";
 import { RootState } from "@/store/store";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { usePathname } from "next/navigation";
 import { Search, X } from "lucide-react";

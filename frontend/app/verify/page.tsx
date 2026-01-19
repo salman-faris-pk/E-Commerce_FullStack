@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState, useCallback, Suspense } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import { backendUrl } from "../../utils/backendUrl";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";

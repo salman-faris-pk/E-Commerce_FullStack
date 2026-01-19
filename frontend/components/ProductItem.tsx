@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import React from 'react'
 import { productItemProp } from "../app/types/AllTypes"
 import Image from 'next/image';
 

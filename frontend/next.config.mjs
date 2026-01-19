@@ -9,6 +9,7 @@ const nextConfig = {
         pathname:'/dqqcpkeup/image/upload/**'
       },
     ],
+    qualities:[100,75, 80],
   },
 }
 

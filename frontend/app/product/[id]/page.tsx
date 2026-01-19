@@ -13,6 +13,10 @@ type Product = {
   subCategory: string;
 };
 
+type PageProps = {
+  params: Promise<{ id: string }>;
+};
+
 async function getProduct(id: string): Promise<Product | null> {
   try {
     const res = await fetch(
@@ -31,12 +35,11 @@ async function getProduct(id: string): Promise<Product | null> {
   }
 }
 
-export default async function ProductPage(props: { params: { id: string } }) {
+export default async function ProductPage({ params }: PageProps) {
   
-   const { params } = props;
+   const { id } = await params;
 
-  const awaitedParams = await params;
-  const product = await getProduct(awaitedParams.id);
+  const product = await getProduct(id);
   
   if (!product) {
     return (

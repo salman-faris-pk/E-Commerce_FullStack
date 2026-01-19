@@ -1,7 +1,6 @@
 "use client"
 import Title from '@/components/Title'
 import { RootState } from '@/store/store'
-import React from 'react'
 import { CartTotal } from '@/app/cart/CartTotal'
 import { useRouter } from 'next/navigation'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
