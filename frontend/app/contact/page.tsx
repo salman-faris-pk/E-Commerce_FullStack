@@ -1,4 +1,4 @@
-import { Newsletter } from '@/components/Newsletter'
+import Newsletter  from '@/components/Newsletter'
 import Title from '@/components/Title'
 import Image from 'next/image'
 import React from 'react'

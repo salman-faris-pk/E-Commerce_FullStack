@@ -25,6 +25,7 @@ export const CollectionPageClient = ({ initialProducts }: CollectionPageClientPr
     (state: RootState) => state.products.subcategory
   );
 
+  
   const query = useMemo(
     () => ({
       search,
@@ -103,3 +104,5 @@ export const CollectionPageClient = ({ initialProducts }: CollectionPageClientPr
 };
 
 export default CollectionPageClient;
+
+

@@ -1,22 +1,23 @@
-import CollectionPageClient  from "./CollectionPageClient";
+import CollectionPageClient from "./CollectionPageClient";
 import { backendUrl } from "@/utils/backendUrl";
-
+import { productItemProp } from "@/app/types/AllTypes";
 
 export default async function CollectionPage() {
-  let products = [];
+  let products: productItemProp[] = [];
 
   try {
     const res = await fetch(`${backendUrl}/api/product/all-collections`, {
-      next: { revalidate: 60}
+      next: { revalidate: 180 },
     });
 
     if (res.ok) {
       const data = await res.json();
-      products = data.products || [];
+      products = data.products ?? [];
     }
-  } catch {
-    products = [];
+  } catch (error) {
+    console.error(error);
   }
 
   return <CollectionPageClient initialProducts={products} />;
 }
+

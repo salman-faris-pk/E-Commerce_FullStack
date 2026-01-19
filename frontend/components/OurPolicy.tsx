@@ -5,7 +5,7 @@ import returnIcon from "@/public/return.png"
 import supportIcon from "@/public/support.png"
 
 
-export const OurPolicy = () => {
+ const OurPolicy = () => {
   return (
     <div className='flex flex-col sm:flex-row justify-around gap-12 sm:gap-2 text-center py-20 text-xs  sm:text-sm md:text-base text-gray-700'>
         
@@ -29,3 +29,5 @@ export const OurPolicy = () => {
     </div>
   )
 }
+
+export default OurPolicy;

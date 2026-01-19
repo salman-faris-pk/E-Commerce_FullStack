@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 
-export const Newsletter = () => {
+const Newsletter = () => {
 
     const handleSubmit =(e: React.FormEvent)=>{
        e.preventDefault();
@@ -25,3 +25,5 @@ export const Newsletter = () => {
     </div>
   )
 }
+
+export default Newsletter;
