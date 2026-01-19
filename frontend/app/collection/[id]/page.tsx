@@ -1,3 +1,4 @@
+
 import { backendUrl } from "@/utils/backendUrl";
 import ProductClient from "@/components/ProductClient";
 
@@ -15,16 +16,11 @@ type Product = {
 
 async function getProduct(id: string): Promise<Product | null> {
   try {
-    const res = await fetch(
-      `${backendUrl}/api/product/single-product/${id}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(`${backendUrl}/api/product/single-product/${id}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      cache: "no-store",
+    });
 
     if (!res.ok) return null;
 
@@ -35,12 +31,11 @@ async function getProduct(id: string): Promise<Product | null> {
   }
 }
 
-export default async function CollectionItemPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const product = await getProduct(params.id);
+export default async function CollectionItemPage(props: { params: { id: string } }) {
+  const { params } = props;
+
+  const awaitedParams = await params;
+  const product = await getProduct(awaitedParams.id);
 
   if (!product) {
     return (

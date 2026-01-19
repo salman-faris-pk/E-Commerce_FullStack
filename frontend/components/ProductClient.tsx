@@ -80,7 +80,6 @@ export default function ProductClient({ product }: { product: Product }) {
       <div className="flex gap-12 flex-col sm:flex-row">
         {/* IMAGE GALLERY */}
         <div className="flex-1 flex flex-col-reverse gap-3 sm:flex-row">
-          {/* Thumbnails */}
           <div className="flex sm:flex-col gap-2 sm:w-[18.7%] w-full">
             {product.image.map((img, index) => (
               <div

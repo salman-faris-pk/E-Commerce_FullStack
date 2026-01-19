@@ -20,4 +20,3 @@ export default async function CollectionPage() {
 
   return <CollectionPageClient initialProducts={products} />;
 }
-
